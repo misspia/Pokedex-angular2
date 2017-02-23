@@ -63,6 +63,7 @@ function eachPokemonInList(td, baseUrl) {
 		profileUrl: td.eq(1).children('a').attr('href')
 	};
 	if(pokemon.name.toLowerCase() == 'deoxys') {
+	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		console.log(pokemon)
 		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
 	
@@ -72,24 +73,36 @@ function eachPokemonInList(td, baseUrl) {
 }
 
 function enterPokemonEntry(url, form) {
-
-	requestUrl(url).then(function(body) {
 	
+	requestUrl(url).then(function(body) {
+		
 		var $ = cheerio.load(body);
 		var formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
 			main = $('.main-content');
 
-		$(formTabs).each(function(i, element) {
+		if(form == "") {
+			var tabContainer = formTabs.children('a').eq(0).attr('href');
+			scrapeProfileSections($, tabContainer, main);
 
-			if(form == $(this).text().toLowerCase()) {
-
-				var tabContainer = $(this).children('a').attr('href');
-				scrapeProfileSections($, tabContainer, main);
-			}
-		})
+		} else {
+			
+			multipleForms($, form, formTabs);
+		}		
 
 	}, function(error) {
 		console.log(error);
+	})
+}
+
+function multipleForms($, form, formTabs) {
+	
+	$(formTabs).each(function(i, element) {
+
+		if(form == $(this).text().toLowerCase()) {
+			
+			var tabContainer = $(this).children('a').attr('href');
+			scrapeProfileSections($, tabContainer, main);
+		}
 	})
 }
 
@@ -100,6 +113,32 @@ function scrapeProfileSections($, tab, main) {
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
 		evolutionTable = $(main).find('h2:contains("Evolution chart")').next(),
 		movesSection = $(main).find('h2:contains("Moves learned by")').next().next();
+
+		scrapeSummaryTable($, summaryTable);
+}
+
+function scrapeSummaryTable($, table) {
+
+	var tbody = table.find('tbody');
+	var types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
+	var species = tbody.find('th:contains("Species")').next();
+	var height = tbody.find('th:contains("Height")').next();
+	var weight = tbody.find('th:contains("Weight")').next();
+	var abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
+	
+	console.log(abilities);
+}
+
+function getArrayCharacteristics($, nodeContainer) {
+	
+	var characteristics = [];
+	
+	$(nodeContainer).each(function(i, ele) {
+		
+		 characteristics.push($(this).text());
+	})
+
+	return characteristics;
 }
 
 
