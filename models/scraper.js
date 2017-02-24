@@ -1,25 +1,21 @@
-var cheerio = require('cheerio');
-var request = require('request');
-var fs = require('file-system');
+const cheerio 	= require('cheerio');
+const request 	= require('request');
+const fs 		= require('file-system');
 
 main();
 
 function main() {
 	
-	var baseUrl = "http://pokemondb.net";
+	const baseUrl = "http://pokemondb.net";
 
 	getPokemonList(baseUrl);	
 }
 
 function requestUrl(url) {
-
-	return promise = new Promise(function(resolve, reject) {
-
-		request(url, function(error, response, body) {
+	return new Promise( (resolve, reject) => {
+		request(url, (error, response, body) => {
 			if(!error && response.statusCode == 200){
-				
 				resolve(body);
-
 			} else {
 				reject(error);
 			}
@@ -29,32 +25,31 @@ function requestUrl(url) {
 
 function getPokemonList(baseUrl) {
 	
-	var requestPokedex = requestUrl(baseUrl + "/pokedex/all");
-	var pokedex = [];
+	let requestPokedex = requestUrl(baseUrl + "/pokedex/all");
+	let pokedex = [];
 
-	requestPokedex.then(function(body) {
+	requestPokedex.then( body => {
 		
-		var $ = cheerio.load(body);
-		var pokemonRow = $('#pokedex').children('tbody').children('tr');
+		let $ = cheerio.load(body);
+		let pokemonRow = $('#pokedex').children('tbody').children('tr');
 
-		$(pokemonRow).each(function(i, element) {
+		$(pokemonRow).map( (i, element) => {
 
-			var td = $(this).children('td');
-			var pokemon = eachPokemonInList(td, baseUrl);
+			let td = $(element).children('td');
+			let pokemon = eachPokemonInList(td, baseUrl);
 
 			pokedex.push(pokemon);
 		});
 
 		// console.log(pokedex);
 
-	}, function(err) {
-		console.log(err);
-	})	
+	}).catch( err => {
+		console.log(err)
+	})
 }
 
 function eachPokemonInList(td, baseUrl) {
-
-	var pokemon = {
+	let pokemon = {
 		id: parseInt(td.eq(0).text()),
 		idStr: td.eq(0).text().replace(/\s/g, ''),
 		icon: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
@@ -66,41 +61,36 @@ function eachPokemonInList(td, baseUrl) {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		console.log(pokemon)
 		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
-	
 	}
 
 	return pokemon;
 }
 
 function enterPokemonEntry(url, form) {
-	
-	requestUrl(url).then(function(body) {
-		
-		var $ = cheerio.load(body);
-		var formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
-			main = $('.main-content');
 
-		if(form == "") {
-			var tabContainer = formTabs.children('a').eq(0).attr('href');
+	requestUrl(url).then( body => {
+		
+		let $ = cheerio.load(body);
+		let formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
+			main     = $('.main-content');
+
+		if(form === "") {
+			let tabContainer = formTabs.children('a').eq(0).attr('href');
 			scrapeProfileSections($, tabContainer, main);
 
 		} else {
-			
 			multipleForms($, form, formTabs);
 		}		
 
-	}, function(error) {
-		console.log(error);
+	}).catch( err => {
+		console.log(err);
 	})
 }
 
 function multipleForms($, form, formTabs) {
-	
-	$(formTabs).each(function(i, element) {
-
+	$(formTabs).each( (i, element) => {
 		if(form == $(this).text().toLowerCase()) {
-			
-			var tabContainer = $(this).children('a').attr('href');
+			let tabContainer = $(this).children('a').attr('href');
 			scrapeProfileSections($, tabContainer, main);
 		}
 	})
@@ -108,7 +98,7 @@ function multipleForms($, form, formTabs) {
 
 function scrapeProfileSections($, tab, main) {
 
-	var summaryTable = $(tab).find('h2:contains("Pokédex data")').next(),
+	let summaryTable = $(tab).find('h2:contains("Pokédex data")').next(),
 		statTable = $(tab).find('h2:contains("Base stats")').next(),
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
 		evolutionTable = $(main).find('h2:contains("Evolution chart")').next(),
@@ -119,44 +109,23 @@ function scrapeProfileSections($, tab, main) {
 
 function scrapeSummaryTable($, table) {
 
-	var tbody = table.find('tbody');
-	var types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
-	var species = tbody.find('th:contains("Species")').next();
-	var height = tbody.find('th:contains("Height")').next();
-	var weight = tbody.find('th:contains("Weight")').next();
-	var abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
+	let tbody = table.find('tbody');
+	let types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
+	let species = tbody.find('th:contains("Species")').next();
+	let height = tbody.find('th:contains("Height")').next();
+	let weight = tbody.find('th:contains("Weight")').next();
+	let abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
 	
 	console.log(abilities);
 }
 
 function getArrayCharacteristics($, nodeContainer) {
 	
-	var characteristics = [];
+	let characteristics = [];
 	
-	$(nodeContainer).each(function(i, ele) {
-		
+	$(nodeContainer).each( (i, ele) => {
 		 characteristics.push($(this).text());
 	})
 
 	return characteristics;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
