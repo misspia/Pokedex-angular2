@@ -63,7 +63,8 @@ function eachPokemonInList(td, baseUrl) {
 		profileUrl: td.eq(1).children('a').attr('href')
 	};
 
-	if(pokemon.name.toLowerCase() == 'deoxys') {
+	if(pokemon.name.toLowerCase() == 'caterpie') {
+	// if(pokemon.name.toLowerCase() == 'deoxys') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		console.log(pokemon);
 		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
@@ -78,14 +79,14 @@ function enterPokemonEntry(url, form) {
 		
 		let $ = cheerio.load(body);
 		let formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
-			main     = $('.main-content');
+			main 	 = $('article');
 
 		if(form === "") {
 			let tabContainer = formTabs.children('a').eq(0).attr('href');
 			scrapeProfileSections($, tabContainer, main);
 
 		} else {
-			multipleForms($, form, formTabs);
+			multipleForms($, form, formTabs, main);
 		}		
 
 	}).catch( err => {
@@ -93,7 +94,7 @@ function enterPokemonEntry(url, form) {
 	})
 }
 
-function multipleForms($, form, formTabs) {
+function multipleForms($, form, formTabs, main) {
 
 	$(formTabs).map( (i, element) => {
 
@@ -112,12 +113,14 @@ function scrapeProfileSections($, tab, main) {
 		breedingTable = $(tab).find('h2:contains("Breeding")').next(),
 		statTable = $(tab).find('h2:contains("Base stats")').next(),
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
-		evolutionTable = $(main).find('h2:contains("Evolution chart")').next(),
-		movesSection = $(main).find('h2:contains("Moves learned by")').next().next();
+		movesSection = $(main).find('h2:contains("Moves learned by")').next().next(),
+		locationTable = $(main).find('h2:contains("Where to find")').next();
 
 		scrapeSummaryTable($, summaryTable);
-		scrapeStatTable($, statTable);
 		scrapeBreedingTable($, breedingTable);
+		scrapeStatTable($, statTable);
+		scrapeEntryTable($, entryTable);
+		scrapeLocationTable($, locationTable);
 }
 
 function scrapeSummaryTable($, table) {
@@ -176,9 +179,38 @@ function scrapeStatTable($, table) {
 			};	
 		}			
 	})
-	console.log(stats);
+	// console.log(stats);
 }
 
+function scrapeEntryTable($, table) {
+
+	let tr = $(table).find('tbody').children('tr');
+	let entries = {};
+
+	$(tr).map( (i, element) => {
+
+		let version = $(element).find('th').text();
+
+		entries[version] = $(element).find('td').text();
+	});
+
+	// console.log(entries);
+}
+
+function scrapeLocationTable($, table) {
+
+	let tr = $(table).find('tbody').children('tr');
+	let locations = {};
+
+	$(tr).map( (i, element) => {
+
+		let version = $(element).find('th').text();
+
+		locations[version] = getArrayCharacteristics($, $(element).find('td'));
+	});
+
+	// console.log(locations);
+}
 
 
 
