@@ -8,7 +8,8 @@ function main() {
 	
 	const baseUrl = "http://pokemondb.net";
 
-	getPokemonList(baseUrl);	
+	getPokemonList(baseUrl);
+	getEvolutionChart(baseUrl + '/evolution');	
 }
 
 function requestUrl(url) {
@@ -214,16 +215,38 @@ function scrapeLocationTable($, table) {
 
 
 
+function getEvolutionChart(url) {
 
+	let requestEvolution = requestUrl(url); 
 
+	requestEvolution.then( body => {
 
+		let $ = cheerio.load(body);
+		let family = $('.infocard-evo-list');
+		let allFamilies = [];
+		
+		scrapeEachEvolFamily($, family);
+		
 
+	}).catch( err => {
 
+		console.log(err);
+	});
 
+}
 
+function scrapeEachEvolFamily($, family) {
 
+	$(family).map( (i, family) => {
+			
+		let memberCard = $(family).children('span').not('.small'); 
 
+		$(memberCard).map( (j, familyMember) => {
 
+			
+			
+		})
 
+	})
 
-
+}
