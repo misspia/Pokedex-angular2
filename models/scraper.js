@@ -121,6 +121,7 @@ function scrapeProfileSections($, tab, main) {
 		scrapeBreedingTable($, breedingTable);
 		scrapeStatTable($, statTable);
 		scrapeEntryTable($, entryTable);
+		scrapeMovesSection($, movesSection);
 		scrapeLocationTable($, locationTable);
 }
 
@@ -196,6 +197,86 @@ function scrapeEntryTable($, table) {
 	});
 
 	// console.log(entries);
+}
+
+function scrapeMovesSection($, section) {
+	let movesByLevelUpTable = $(section).find('h3:contains("Moves learnt by level up")').first().next().next(),
+		movesbyEggTable = $(section).find('h3:contains("Egg moves")').first().next().next(),
+		movesByTutorTable = $(section).find('h3:contains("Move Tutor moves")').first().next().next(),
+		movesByTMTable = $(section).find('h3:contains("Moves learnt by TM")').first().next().next();
+
+	let moves = {
+		'byLevelUp': [],
+		'byEgg': [],
+		'byTutor': [],
+		'byTM': []
+	};
+	let movesByLevelUp = [];
+
+	$(movesByLevelUpTable).find('tbody').children('tr').map( (i, element) => {
+		moves['byLevelUp'].push(getFormattedMovesWithLevels($, $(element).find('td')));
+	});
+	
+	$(movesbyEggTable).find('tbody').children('tr').map( (i, element) => {
+		moves['byEgg'].push(getFormattedMovesNoLevels($, $(element).find('td')));
+	});
+
+	// Messed up because not all Pokemon have tutor moves in S/M and 
+	// so the behaviour of this function will also look at the ORAS moves
+	// since they're both rendered into the page.
+	$(movesByTutorTable).find('tbody').children('tr').map( (i, element) => {
+		moves['byTutor'].push(getFormattedMovesNoLevels($, $(element).find('td')));
+	});
+
+	$(movesByTMTable).find('tbody').children('tr').map( (i, element) => {
+		moves['byTM'].push(getFormattedMovesWithLevels($, $(element).find('td')));
+	});
+
+	console.log(moves);
+}
+
+function getFormattedMovesWithLevels($, nodeContainer) {
+	
+	let moveDetails = {};
+	
+	$(nodeContainer).map( (i, element) => {
+		if(i === 0) {
+			moveDetails['Level'] = $(element).text();
+ 		} else if (i === 1) {
+ 			moveDetails['Name'] = $(element).text();
+ 		} else if (i === 2) {
+ 			moveDetails['Type'] = $(element).text();
+ 		} else if (i === 3) {
+ 			moveDetails['Category'] = $(element).attr('data-filter-val');
+ 		} else if (i === 4) {
+ 			moveDetails['Power'] = $(element).text();
+ 		} else if (i === 5) {
+ 			moveDetails['Accuracy'] = $(element).text();
+ 		}
+	});
+
+	return moveDetails;
+}
+
+function getFormattedMovesNoLevels($, nodeContainer) {
+	
+	let moveDetails = {};
+	
+	$(nodeContainer).map( (i, element) => {
+		if(i === 0) {
+ 			moveDetails['Name'] = $(element).text();
+ 		} else if (i === 1) {
+ 			moveDetails['Type'] = $(element).text();
+ 		} else if (i === 2) {
+ 			moveDetails['Category'] = $(element).attr('data-filter-val');
+ 		} else if (i === 3) {
+ 			moveDetails['Power'] = $(element).text();
+ 		} else if (i === 4) {
+ 			moveDetails['Accuracy'] = $(element).text();
+ 		}
+	});
+
+	return moveDetails;
 }
 
 function scrapeLocationTable($, table) {
