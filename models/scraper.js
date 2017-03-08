@@ -67,7 +67,7 @@ function eachPokemonInList(td, baseUrl) {
 	// if(pokemon.name.toLowerCase() == 'caterpie') {
 	if(pokemon.name.toLowerCase() == 'deoxys') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
-		console.log(pokemon);
+		// console.log(pokemon);
 		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
 	}
 
@@ -232,7 +232,7 @@ function scrapeMovesSection($, section) {
 		moves['byTM'].push(getFormattedMovesWithLevels($, $(element).find('td')));
 	});
 
-	console.log(moves);
+	// console.log(moves);
 }
 
 function getFormattedMovesWithLevels($, nodeContainer) {
@@ -320,14 +320,69 @@ function scrapeEachEvolFamily($, family) {
 
 	$(family).map( (i, family) => {
 			
-		let memberCard = $(family).children('span').not('.small'); 
+		let tree = {},
+			memberCard = $(family).children('span').not('.small'); 
 
-		$(memberCard).map( (j, familyMember) => {
+		$(memberCard).map( (stage, familyMember) => {
 
-			
-			
+
+			if($(familyMember).attr('class')  == 'infocard-group') {
+
+				tree['stage' + stage] = groupedEvolStage($, stage, familyMember);
+
+			} else {
+				
+				tree['stage' + stage] = [unGroupedEvolStage($, stage, familyMember)];
+
+			}
+				
 		})
-
+		console.log(tree)
 	})
+}
+
+function unGroupedEvolStage($, stage, member)  {
+
+	let memberInfo = {};
+		
+		memberInfo['name'] = $(member).find('.ent-name').text();
+		memberInfo['condition'] = [];
+
+	if(stage > 0) {
+		
+		let conditionContainer = $(member).prev();
+			memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
+	}
+	// console.log(memberInfo);
+	return memberInfo;
 
 }
+
+function groupedEvolStage($, stage, group) {
+	
+	let stageMembers = [];
+
+	$($(group).children('span').not('.small')).map( (index, member) => {
+		
+		let memberInfo = unGroupedEvolStage($, stage, member);
+
+		stageMembers.push(memberInfo);
+	})
+	
+	return stageMembers;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
