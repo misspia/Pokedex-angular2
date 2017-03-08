@@ -64,8 +64,8 @@ function eachPokemonInList(td, baseUrl) {
 		profileUrl: td.eq(1).children('a').attr('href')
 	};
 
-	if(pokemon.name.toLowerCase() == 'caterpie') {
-	// if(pokemon.name.toLowerCase() == 'deoxys') {
+	// if(pokemon.name.toLowerCase() == 'caterpie') {
+	if(pokemon.name.toLowerCase() == 'deoxys') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		console.log(pokemon);
 		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
