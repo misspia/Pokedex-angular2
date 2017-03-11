@@ -323,6 +323,14 @@ function scrapeEachEvolFamily($, family) {
 		let tree = {},
 			memberCard = $(family).children('span').not('.small'); 
 
+
+		if($(family).text().indexOf('Eevee') >= 0) {
+			
+			eeveeEvolutionCase($, family);
+
+		}
+
+
 		$(memberCard).map( (stage, familyMember) => {
 
 
@@ -337,11 +345,24 @@ function scrapeEachEvolFamily($, family) {
 			}
 				
 		})
-		console.log(tree)
+		// console.log(tree)
 	})
 }
+function eeveeEvolutionCase($, tree) {
+	let memberInfo = {},
+		eeveeLeft = $(tree).children('span').eq(0),
+		eeveeRight = $(tree).children('span').eq(2);
 
-function unGroupedEvolStage($, stage, member)  {
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(1))];
+	memberInfo['stage1'] = groupedEvolStageEevee($, 1, eeveeLeft, eeveeRight);
+
+	console.log(JSON.stringify(memberInfo));
+	// console.log(memberInfo);
+
+}
+
+
+function unGroupedEvolStage($, stage, member, eeveeCase = false)  {
 
 	let memberInfo = {};
 		
@@ -350,8 +371,15 @@ function unGroupedEvolStage($, stage, member)  {
 
 	if(stage > 0) {
 		
-		let conditionContainer = $(member).prev();
-			memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
+		if(eeveeCase) {
+			let conditionContainer = $(member).next();
+				memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
+
+		} else {
+
+			let conditionContainer = $(member).prev();
+				memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
+		}	
 	}
 	// console.log(memberInfo);
 	return memberInfo;
@@ -372,9 +400,28 @@ function groupedEvolStage($, stage, group) {
 	return stageMembers;
 }
 
+// for left side of eevee case
+function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
+	
+	let stageMembers = [];
+	
+	$($(groupLeft).children('span').not('.small')).map( (index, member) => {
+		
+		let memberInfo = unGroupedEvolStage($, stage, member, true);
+
+		stageMembers.push(memberInfo);
+	});
 
 
+	$($(groupRight).children('span').not('.small')).map( (index, member) => {
+		
+		let memberInfo = unGroupedEvolStage($, stage, member);
 
+		stageMembers.push(memberInfo);
+	})
+	
+	return stageMembers;
+}
 
 
 
