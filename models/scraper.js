@@ -295,7 +295,7 @@ function scrapeLocationTable($, table) {
 }
 
 
-
+// EVOLUTIONS
 function getEvolutionChart(url) {
 
 	let requestEvolution = requestUrl(url); 
@@ -308,12 +308,10 @@ function getEvolutionChart(url) {
 		
 		scrapeEachEvolFamily($, family);
 		
-
 	}).catch( err => {
 
 		console.log(err);
 	});
-
 }
 
 function scrapeEachEvolFamily($, family) {
@@ -323,28 +321,25 @@ function scrapeEachEvolFamily($, family) {
 		let tree = {},
 			memberCard = $(family).children('span').not('.small'); 
 
+		if($(family).text().indexOf('Eevee') >= 0) {			
+			tree = eeveeEvolutionCase($, family);
 
-		if($(family).text().indexOf('Eevee') >= 0) {
+		} else if($(family).text().indexOf('Wurmple') >= 0 || $(family).text().indexOf('Nincada') >= 0) {				
+			// doubleGroupedEvolCase($, family)
+
+		} else if($(family).text().indexOf('Burmy') >= 0 ) {
+			tree = burmyEvolutionCase($, family);
 			
-			eeveeEvolutionCase($, family);
+		} else {
+			$(memberCard).map( (stage, familyMember) => {
 
+				if($(familyMember).attr('class')  == 'infocard-group') {
+					tree['stage' + stage] = groupedEvolStage($, stage, familyMember);
+				} else {					
+					tree['stage' + stage] = [unGroupedEvolStage($, stage, familyMember)];
+				}					
+			})
 		}
-
-
-		$(memberCard).map( (stage, familyMember) => {
-
-
-			if($(familyMember).attr('class')  == 'infocard-group') {
-
-				tree['stage' + stage] = groupedEvolStage($, stage, familyMember);
-
-			} else {
-				
-				tree['stage' + stage] = [unGroupedEvolStage($, stage, familyMember)];
-
-			}
-				
-		})
 		// console.log(tree)
 	})
 }
@@ -356,11 +351,35 @@ function eeveeEvolutionCase($, tree) {
 	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(1))];
 	memberInfo['stage1'] = groupedEvolStageEevee($, 1, eeveeLeft, eeveeRight);
 
-	console.log(JSON.stringify(memberInfo));
-	// console.log(memberInfo);
-
+	// console.log(JSON.stringify(memberInfo));
+	return memberInfo;
 }
 
+function burmyEvolutionCase($, tree) {
+	let memberInfo = {}
+
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
+	memberInfo['stage1'] = [];
+
+	$($(tree).children('span').not('.small')).map( (index, member) => {
+		
+		if($(member).find('.ent-name').text() != 'Burmy') {
+			memberInfo['stage1'].push(unGroupedEvolStage($, 1, member));
+		}		
+	})
+	console.log(JSON.stringify(memberInfo));
+	return memberInfo;
+}
+
+function doubleGroupedEvolCase($, tree) {
+
+	let memberInfo = {};
+
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
+
+
+	console.log(memberInfo);
+}
 
 function unGroupedEvolStage($, stage, member, eeveeCase = false)  {
 
@@ -383,7 +402,6 @@ function unGroupedEvolStage($, stage, member, eeveeCase = false)  {
 	}
 	// console.log(memberInfo);
 	return memberInfo;
-
 }
 
 function groupedEvolStage($, stage, group) {
@@ -400,7 +418,7 @@ function groupedEvolStage($, stage, group) {
 	return stageMembers;
 }
 
-// for left side of eevee case
+// Eevee evolution case
 function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 	
 	let stageMembers = [];
@@ -421,6 +439,12 @@ function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 	})
 	
 	return stageMembers;
+}
+
+// Cases where differenct branched stages are double grouped into 1 container: Wumple, Nincada
+function groupedEvolStageDouble($, stage, group){
+
+	
 }
 
 
