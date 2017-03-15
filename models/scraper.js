@@ -343,33 +343,6 @@ function scrapeEachEvolFamily($, family) {
 		// console.log(tree)
 	})
 }
-function eeveeEvolutionCase($, tree) {
-	let memberInfo = {},
-		eeveeLeft = $(tree).children('span').eq(0),
-		eeveeRight = $(tree).children('span').eq(2);
-
-	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(1))];
-	memberInfo['stage1'] = groupedEvolStageEevee($, 1, eeveeLeft, eeveeRight);
-
-	// console.log(JSON.stringify(memberInfo));
-	return memberInfo;
-}
-
-function burmyEvolutionCase($, tree) {
-	let memberInfo = {}
-
-	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
-	memberInfo['stage1'] = [];
-
-	$($(tree).children('span').not('.small')).map( (index, member) => {
-		
-		if($(member).find('.ent-name').text() != 'Burmy') {
-			memberInfo['stage1'].push(unGroupedEvolStage($, 1, member));
-		}		
-	})
-	console.log(JSON.stringify(memberInfo));
-	return memberInfo;
-}
 
 function doubleGroupedEvolCase($, tree) {
 
@@ -381,7 +354,7 @@ function doubleGroupedEvolCase($, tree) {
 	console.log(memberInfo);
 }
 
-function unGroupedEvolStage($, stage, member, eeveeCase = false)  {
+function unGroupedEvolStage($, stage, member, specialCase = false)  {
 
 	let memberInfo = {};
 		
@@ -390,11 +363,17 @@ function unGroupedEvolStage($, stage, member, eeveeCase = false)  {
 
 	if(stage > 0) {
 		
-		if(eeveeCase) {
+		if(specialCase == 'eevee') {
 			let conditionContainer = $(member).next();
 				memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
 
 		} else {
+			if(specialCase == 'burmy' && memberInfo.name != 'Mothim') {
+				
+				let suffix = '-' + $(member).find('.ent-name').next().next().text().replace(/\s/g, "-");	
+				memberInfo['name'] += suffix;
+
+			}
 
 			let conditionContainer = $(member).prev();
 				memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
@@ -418,6 +397,18 @@ function groupedEvolStage($, stage, group) {
 	return stageMembers;
 }
 
+function eeveeEvolutionCase($, tree) {
+	let memberInfo = {},
+		eeveeLeft = $(tree).children('span').eq(0),
+		eeveeRight = $(tree).children('span').eq(2);
+
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(1))];
+	memberInfo['stage1'] = groupedEvolStageEevee($, 1, eeveeLeft, eeveeRight);
+
+	// console.log(JSON.stringify(memberInfo));
+	return memberInfo;
+}
+
 // Eevee evolution case
 function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 	
@@ -425,7 +416,7 @@ function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 	
 	$($(groupLeft).children('span').not('.small')).map( (index, member) => {
 		
-		let memberInfo = unGroupedEvolStage($, stage, member, true);
+		let memberInfo = unGroupedEvolStage($, stage, member, 'eevee');
 
 		stageMembers.push(memberInfo);
 	});
@@ -437,18 +428,25 @@ function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 
 		stageMembers.push(memberInfo);
 	})
-	
+
 	return stageMembers;
 }
 
-// Cases where differenct branched stages are double grouped into 1 container: Wumple, Nincada
-function groupedEvolStageDouble($, stage, group){
+function burmyEvolutionCase($, tree) {
+	let memberInfo = {}
 
-	
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
+	memberInfo['stage1'] = [];
+
+	$($(tree).children('span').not('.small')).map( (index, member) => {
+		
+		if($(member).find('.ent-name').text() != 'Burmy') {
+			memberInfo['stage1'].push(unGroupedEvolStage($, 1, member, 'burmy'));
+		}		
+	})
+	console.log(JSON.stringify(memberInfo));
+	return memberInfo;
 }
-
-
-
 
 
 
