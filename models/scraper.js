@@ -8,9 +8,9 @@ function main() {
 	
 	const baseUrl = "http://pokemondb.net";
 
-	getPokemonList(baseUrl);
+	// getPokemonList(baseUrl);
 	getEvolutionChart(baseUrl + '/evolution');	
-	getMasterTypeChart(baseUrl + '/type/dual');
+	// getMasterTypeChart(baseUrl + '/type/dual');
 }
 
 function requestUrl(url) {
@@ -296,7 +296,8 @@ function scrapeLocationTable($, table) {
 }
 
 
-// EVOLUTIONS
+////////////////////////EVOLUTIONS////////////////////////
+
 function getEvolutionChart(url) {
 
 	let requestEvolution = requestUrl(url); 
@@ -326,7 +327,7 @@ function scrapeEachEvolFamily($, family) {
 			tree = eeveeEvolutionCase($, family);
 
 		} else if($(family).text().indexOf('Wurmple') >= 0 || $(family).text().indexOf('Nincada') >= 0) {				
-			// doubleGroupedEvolCase($, family)
+			doubleGroupedEvolCase($, family);
 
 		} else if($(family).text().indexOf('Burmy') >= 0 ) {
 			tree = burmyEvolutionCase($, family);
@@ -345,15 +346,6 @@ function scrapeEachEvolFamily($, family) {
 	})
 }
 
-function doubleGroupedEvolCase($, tree) {
-
-	let memberInfo = {};
-
-	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
-
-
-	console.log(memberInfo);
-}
 
 function unGroupedEvolStage($, stage, member, specialCase = false)  {
 
@@ -447,6 +439,20 @@ function burmyEvolutionCase($, tree) {
 	})
 	// console.log(JSON.stringify(memberInfo));
 	return memberInfo;
+}
+
+// Wurmple and Nincada
+function doubleGroupedEvolCase($, tree) {
+
+	let memberInfo = {};
+	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(0))];
+	memberInfo['stage1'] = [unGroupedEvolStage($, 1, $(tree).children('span').eq(1).children('span').eq(1))];
+	memberInfo['stage1'].push(unGroupedEvolStage($, 1, $(tree).children('span').eq(1).children('span').eq(5)));
+
+	memberInfo['stage2'] = [unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(3))];
+	memberInfo['stage2'].push(unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(7)));
+
+	console.log(JSON.stringify(memberInfo));
 }
 
 
