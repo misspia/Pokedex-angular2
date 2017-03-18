@@ -9,8 +9,10 @@ function main() {
 	const baseUrl = "http://pokemondb.net";
 
 	// getPokemonList(baseUrl);
-	getEvolutionChart(baseUrl + '/evolution');	
+	// getEvolutionChart(baseUrl + '/evolution');	
 	// getMasterTypeChart(baseUrl + '/type/dual');
+	// getMasterMoveList(baseUrl + '/move/all');
+	getMasterAbilityList(baseUrl + '/ability');
 }
 
 function requestUrl(url) {
@@ -115,7 +117,7 @@ function scrapeProfileSections($, tab, main) {
 		breedingTable = $(tab).find('h2:contains("Breeding")').next(),
 		statTable = $(tab).find('h2:contains("Base stats")').next(),
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
-		movesSection = $(main).find('h2:contains("Moves learned by")').next().next(),
+		movesSection = $(main).find('h2:contains("Moves learned by")').next().next().remove('.hidden'),
 		locationTable = $(main).find('h2:contains("Where to find")').next();
 
 		scrapeSummaryTable($, summaryTable);
@@ -224,7 +226,7 @@ function scrapeMovesSection($, section) {
 
 	// Messed up because not all Pokemon have tutor moves in S/M and 
 	// so the behaviour of this function will also look at the ORAS moves
-	// since they're both rendered into the page.
+	// since they're both rendered into the page. 
 	$(movesByTutorTable).find('tbody').children('tr').map( (i, element) => {
 		moves['byTutor'].push(getFormattedMovesNoLevels($, $(element).find('td')));
 	});
@@ -233,7 +235,7 @@ function scrapeMovesSection($, section) {
 		moves['byTM'].push(getFormattedMovesWithLevels($, $(element).find('td')));
 	});
 
-	// console.log(moves);
+	console.log(moves);
 }
 
 function getFormattedMovesWithLevels($, nodeContainer) {
@@ -527,7 +529,110 @@ function getTypeEffectValues($, typeRow) {
 	return effectsArr;
 }
 
+//////////////////// MOVE LIST ////////////////////////
 
+function getMasterMoveList(url) {
+	
+	let requestMasterMoveList = requestUrl(url);
 
+	requestMasterMoveList.then( body => {
 
+		let $ = cheerio.load(body),
+			masterTable = $('#moves');
+			console.log(masterTable)
+			scrapeMasterMoveList($, masterTable);
 
+	}).catch( err => {
+
+		console.log(err);
+	})
+}
+
+function scrapeMasterMoveList($, master) {
+
+	let moveList = [];
+
+	$($(master).find('tbody').children('tr')).map( (index, move) => {
+		moveList.push(scrapeMoveRow($, $(move).find('td')));
+	})
+	console.log(moveList);
+	return moveList;
+}
+
+function scrapeMoveRow($, moveRow) {
+
+	let moveDetails = {};
+
+	$(moveRow).map( (i, element) => {
+		if(i === 0) {
+			moveDetails['Name'] = $(element).text();
+ 		} else if (i === 1) {
+ 			moveDetails['Type'] = $(element).text();
+ 		} else if (i === 2) {
+ 			moveDetails['Category'] = $(element).attr('data-filter-val');
+ 		} else if (i === 3) {
+ 			moveDetails['Power'] = $(element).text()
+ 		} else if (i === 4) {
+ 			moveDetails['Accuracy'] = $(element).text();
+ 		} else if (i === 5) {
+ 			moveDetails['PP'] = $(element).text();
+ 		} else if (i === 6) {
+ 			moveDetails['TM'] = $(element).text();
+ 		} else if (i === 7) {
+ 			moveDetails['Effect'] = $(element).text();
+ 		} else if (i === 8) {
+ 			moveDetails['Probability'] = $(element).text();
+ 		}
+	});
+
+	return moveDetails;
+}
+
+//////////////////// MOVE LIST ////////////////////////
+
+function getMasterAbilityList(url) {
+	
+	let requestMasterAbilityList = requestUrl(url);
+
+	requestMasterAbilityList.then( body => {
+
+		let $ = cheerio.load(body),
+			masterTable = $('#abilities');
+			console.log(masterTable)
+			scrapeMasterAbilityList($, masterTable);
+
+	}).catch( err => {
+
+		console.log(err);
+	})
+}
+
+function scrapeMasterAbilityList($, master) {
+
+	let abilityList = [];
+
+	$($(master).find('tbody').children('tr')).map( (index, ability) => {
+		abilityList.push(scrapeAbilityRow($, $(ability).find('td')));
+	})
+	console.log(abilityList);
+	return abilityList;
+}
+
+function scrapeAbilityRow($, abilityRow) {
+
+	let abilityDetails = {};
+
+	$(abilityRow).map( (i, element) => {
+		if(i === 0) {
+			abilityDetails['Name'] = $(element).text();
+ 		} else if (i === 1) {
+ 			abilityDetails['Pokemon'] = $(element).text();
+ 		} else if (i === 2) {
+ 			abilityDetails['Description'] = $(element).text();
+ 		} else if (i === 3) {
+ 			abilityDetails['Generation'] = $(element).text()
+ 		}
+	});
+
+	return abilityDetails;
+}
