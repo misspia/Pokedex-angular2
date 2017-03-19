@@ -8,11 +8,11 @@ function main() {
 	
 	const baseUrl = "http://pokemondb.net";
 
-	getPokemonList(baseUrl);
+	// getPokemonList(baseUrl);
 	// getEvolutionChart(baseUrl + '/evolution');	
 	// getMasterTypeChart(baseUrl + '/type/dual');
 	// getMasterMoveList(baseUrl + '/move/all');
-	// getMasterAbilityList(baseUrl + '/ability');
+	getMasterAbilityList(baseUrl + '/ability');
 }
 
 function requestUrl(url) {
@@ -114,7 +114,6 @@ function multipleForms($, form, formTabs, main) {
 function scrapeProfileSections($, tab, main) {
 
 	let summaryTable = $(tab).find('h2:contains("Pokédex data")').next(),
-		trainingTable = $(tab).find('h2:contains("Training")').next(),
 		breedingTable = $(tab).find('h2:contains("Breeding")').next(),
 		statTable = $(tab).find('h2:contains("Base stats")').next(),
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
@@ -122,7 +121,6 @@ function scrapeProfileSections($, tab, main) {
 		locationTable = $(main).find('h2:contains("Where to find")').next();
 
 		scrapeSummaryTable($, summaryTable);
-		scrapeTrainingTable($, trainingTable);
 		scrapeBreedingTable($, breedingTable);
 		scrapeStatTable($, statTable);
 		scrapeEntryTable($, entryTable);
@@ -151,21 +149,6 @@ function getArrayCharacteristics($, nodeContainer) {
 	})
 
 	return characteristics;
-}
-
-function scrapeTrainingTable($, table) {
-	let tr = table.find('tbody').children('tr');
-	let training = {};
-
-	$(tr).map( (i, element) => {
-		
-		let category = $(element).find('th').text();
-		training[category] = $(element).find('td').text().replace(/\t|\n/g, '');
-
-	})
-
-	console.log(training);
-
 }
 
 function scrapeBreedingTable($, table) {
@@ -252,7 +235,7 @@ function scrapeMovesSection($, section) {
 		moves['byTM'].push(getFormattedMovesWithLevels($, $(element).find('td')));
 	});
 
-	// console.log(moves);
+	console.log(moves);
 }
 
 function getFormattedMovesWithLevels($, nodeContainer) {
