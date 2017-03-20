@@ -1,5 +1,5 @@
-var cheerio = require('cheerio');
-var requestUrl = require('./helpers/requestUrl');
+let cheerio = require('cheerio');
+let requestUrl = require('./helpers/requestUrl');
 
 //////////////////// MOVE LIST ////////////////////////
 
@@ -11,13 +11,15 @@ function getMasterMoveList(url) {
 
 		let $ = cheerio.load(body),
 			masterTable = $('#moves');
-			console.log(masterTable)
-			scrapeMasterMoveList($, masterTable);
+			console.log(masterTable);
+			
+		let masterMoveList = scrapeMasterMoveList($, masterTable);
 
 	}).catch( err => {
 
 		console.log(err);
 	})
+	return masterMoveList;
 }
 
 function scrapeMasterMoveList($, master) {

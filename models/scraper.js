@@ -1,6 +1,5 @@
-var cheerio = require('cheerio');
-var request = require('request');
-var fs = require('file-system');
+let cheerio = require('cheerio');
+let request = require('request');
 
 let pokemonList = require('./methods/pokemonList');
 let evolutionChart = require('./methods/evolutionChart');

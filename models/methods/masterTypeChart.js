@@ -1,5 +1,5 @@
-var cheerio = require('cheerio');
-var requestUrl = require('./helpers/requestUrl');
+let cheerio = require('cheerio');
+let requestUrl = require('./helpers/requestUrl');
 
 //////////////////// DUAL TYPE CHART ////////////////////////
 
@@ -12,12 +12,13 @@ function getMasterTypeChart(url) {
 		let $ = cheerio.load(body),
 			masterTable = $('#dualtypechart').find('tbody');
 			
-			scrapeMasterTypeChart($, masterTable);
+		let masterTypeChart = scrapeMasterTypeChart($, masterTable);
 
 	}).catch( err => {
 
 		console.log(err);
-	})
+	});
+	return masterTypeChart;
 }
 
 function scrapeMasterTypeChart($, master) {

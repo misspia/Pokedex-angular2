@@ -1,5 +1,5 @@
-var cheerio = require('cheerio');
-var requestUrl = require('./helpers/requestUrl');
+let cheerio = require('cheerio');
+let requestUrl = require('./helpers/requestUrl');
 
 //////////////////// ABILITY LIST ////////////////////////
 
@@ -12,12 +12,14 @@ function getMasterAbilityList(url) {
 		let $ = cheerio.load(body),
 			masterTable = $('#abilities');
 			console.log(masterTable)
-			scrapeMasterAbilityList($, masterTable);
+		let masterAbilityList = scrapeMasterAbilityList($, masterTable);
 
 	}).catch( err => {
 
 		console.log(err);
-	})
+	});
+
+	return masterAbilityList;
 }
 
 function scrapeMasterAbilityList($, master) {

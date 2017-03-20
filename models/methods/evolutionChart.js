@@ -1,5 +1,5 @@
-var cheerio = require('cheerio');
-var requestUrl = require('./helpers/requestUrl');
+let cheerio = require('cheerio');
+let requestUrl = require('./helpers/requestUrl');
 
 ////////////////////////EVOLUTIONS////////////////////////
 
@@ -13,12 +13,13 @@ function getEvolutionChart(url) {
 		let family = $('.infocard-evo-list');
 		let allFamilies = [];
 		
-		scrapeEachEvolFamily($, family);
+		allFamilies.push(scrapeEachEvolFamily($, family));
 		
 	}).catch( err => {
 
 		console.log(err);
 	});
+	return allFamilies;
 }
 
 function scrapeEachEvolFamily($, family) {

@@ -8,11 +8,16 @@
 // see list of all db: \l
 
 // ISSUES
-// moves: unique_id doesnt work as primary key, repeated for each  move category
-// evolution: use first stage as unique id repeat table entry for each pkm in evolution fammily?
 // master type table: column heading insertion
 
+let cheerio = require('cheerio');
+let request = require('request');
 
+let pokemonList = require('./methods/pokemonList');
+let evolutionChart = require('./methods/evolutionChart');
+let masterTypeChart = require('./methods/masterTypeChart');
+let masterMoveList = require('./methods/masterMoveList');
+let masterAbilityList = require('./methods/masterAbilityList');
 
 const pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
@@ -25,7 +30,6 @@ const query = client.query(
   	create schema pokedex;
   	create table pokedex.main(
 
-  		primary_key integer PRIMARY KEY,
   		unique_id 	varchar(10),
   		national_id integer,
   		name 		varchar(15),
@@ -46,8 +50,14 @@ const query = client.query(
 
 	create table pokedex.moves(
 		
-		unique_id varchar(10) PRIMARY KEY
-
+		unique_id 	varchar(10),
+		method 		varchar(20),
+		name 		varchar(30),
+		level 		varchar(3),
+		type 		varchar[2],
+		cat 		varchar(15),
+		power 		integer,
+		acc 		integer
 	);	
 
 	create table pokedex.evolution(
@@ -93,21 +103,9 @@ const query = client.query(
 
 	create table pokedex.location(
 		
-		unique_id varchar(10) PRIMARY KEY,
-		red_blue_yellow 		varchar[20],
-		gold_silver 			varchar[20],
-		crystal 				varchar[20],
-		ruby_sapphire 			varchar[20],
-		firered_leafgreen 		varchar[20],
-		emerald 				varchar[20],
-		diamond_pearl 			varchar[20],
-		platnium 				varchar[20],
-		heartgold_soulsilver 	varchar[20],
-		black_white 			varchar[20],
-		black2_white2 			varchar[20],
-		x_y 					varchar[20],
-		omegaruby_alphasapphire varchar[20],
-		sun_moon 				varchar[20]
+		unique_id 	varchar(10),
+		version 	varchar(50),
+		location 	varchar(50)
 	);
 
 	create table pokedex.abilities(
@@ -124,6 +122,26 @@ const query = client.query(
   `);
 query.on('end', () => { client.end(); });
 
+
+function main() {
+	
+	const baseUrl = "http://pokemondb.net";
+
+	let pokemonList = pokemonList.get(baseUrl);
+	// evolutionChart.get(baseUrl + '/evolution');	
+	// masterTypeChart.get(baseUrl + '/type/dual');
+	// masterMoveList.get(baseUrl + '/move/all');
+	// masterAbilityList.get(baseUrl + '/ability');
+
+	const query = query.client(
+		
+		`
+			insert ` + pokemonList.something + ` pokemon.main;
+
+		`
+
+	);
+}
 
 
 

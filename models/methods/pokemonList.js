@@ -1,6 +1,6 @@
-var cheerio = require('cheerio');
-var requestUrl = require('./helpers/requestUrl');
-var getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
+let cheerio = require('cheerio');
+let requestUrl = require('./helpers/requestUrl');
+let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 
 function getPokemonList(baseUrl) {
 	
@@ -24,7 +24,8 @@ function getPokemonList(baseUrl) {
 
 	}).catch( err => {
 		console.log(err)
-	})
+	});
+	return pokedex;
 }
 
 function eachPokemonInList(td, baseUrl) {
