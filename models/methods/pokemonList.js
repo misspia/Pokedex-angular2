@@ -1,6 +1,12 @@
 let cheerio = require('cheerio');
+let fs = require('fs');
+let request = require('request');
+// let http = require('http');
+let https = require('https');
 let requestUrl = require('./helpers/requestUrl');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
+
+getPokemonList("http://pokemondb.net");
 
 function getPokemonList(baseUrl) {
 	
@@ -39,16 +45,17 @@ function eachPokemonInList(td, baseUrl) {
 	};
 
 	// if(pokemon.name.toLowerCase() == 'caterpie') {
-	if(pokemon.name.toLowerCase() == 'deoxys') {
+	// if(pokemon.name.toLowerCase() == 'deoxys') {
+	if(pokemon.name.toLowerCase() == 'charizard') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		// console.log(pokemon);
-		enterPokemonEntry(baseUrl + pokemon.profileUrl, pokemon.form);
+		enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
 	}
 
 	return pokemon;
 }
 
-function enterPokemonEntry(url, form) {
+function enterPokemonProfile(url, form, pokemonName) {
 
 	requestUrl(url).then( body => {
 		
@@ -58,10 +65,10 @@ function enterPokemonEntry(url, form) {
 
 		if(form === "") {
 			let tabContainer = formTabs.children('a').eq(0).attr('href');
-			scrapeProfileSections($, tabContainer, main);
+			scrapeProfileSections($, tabContainer, main, pokemonName);
 
 		} else {
-			multipleForms($, form, formTabs, main);
+			multipleForms($, form, formTabs, main, pokemonName);
 		}		
 
 	}).catch( err => {
@@ -69,20 +76,20 @@ function enterPokemonEntry(url, form) {
 	})
 }
 
-function multipleForms($, form, formTabs, main) {
+function multipleForms($, form, formTabs, main, pokemonName) {
 
 	$(formTabs).map( (i, element) => {
 
 		if(form == $(element).text().toLowerCase()) {
 
 			let tabContainer = $(element).children('a').attr('href');
-			scrapeProfileSections($, tabContainer, main);
+			scrapeProfileSections($, tabContainer, main, pokemonName);
 		}
 	})
 }
 
 
-function scrapeProfileSections($, tab, main) {
+function scrapeProfileSections($, tab, main, pokemonName) {
 
 	let summaryTable = $(tab).find('h2:contains("Pokédex data")').next(),
 		trainingTable = $(tab).find('h2:contains("Training")').next(),
@@ -90,7 +97,8 @@ function scrapeProfileSections($, tab, main) {
 		statTable = $(tab).find('h2:contains("Base stats")').next(),
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
 		movesSection = $(main).find('h2:contains("Moves learned by")').next().next().remove('.hidden'),
-		locationTable = $(main).find('h2:contains("Where to find")').next();
+		locationTable = $(main).find('h2:contains("Where to find")').next(),
+		imgUrl = $(tab).find('.figure').find('img').attr('src');
 
 		scrapeSummaryTable($, summaryTable);
 		scrapeTrainingTable($, trainingTable);
@@ -99,7 +107,20 @@ function scrapeProfileSections($, tab, main) {
 		scrapeEntryTable($, entryTable);
 		scrapeMovesSection($, movesSection);
 		scrapeLocationTable($, locationTable);
+
+		downloadImg(imgUrl, pokemonName);
 }
+
+function downloadImg(imgUrl, pokemonName) {
+	
+	request(imgUrl)
+		.on('error', function(err) {
+		    console.log("couldn't download " + pokemonName);
+		  
+		})
+		.pipe(fs.createWriteStream('./src/assets/images/'+ pokemonName.toLowerCase() + ".jpg"));
+}
+
 
 function scrapeSummaryTable($, table) {
 
@@ -124,7 +145,7 @@ function scrapeTrainingTable($, table) {
 
 	})
 
-	console.log(training);
+	// console.log(training);
 
 }
 
@@ -273,6 +294,8 @@ function scrapeLocationTable($, table) {
 
 	// console.log(locations);
 }
+
+
 
 module.exports = {
 	get: getPokemonList

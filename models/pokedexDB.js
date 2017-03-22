@@ -2,6 +2,7 @@
 // http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WM3SshLyvfY?
 
 // https://docs.google.com/spreadsheets/d/1GZ56WFZEpXGlT4P5FUwOJCzNqVFfju9oFL9SP-kBwU8/edit#gid=549519719
+// https://www.quora.com/How-can-I-build-a-web-scraper-to-be-undetectable
 
 // remove schema: drop schema DBNAME cascade
 // create db: create database DBNAME
