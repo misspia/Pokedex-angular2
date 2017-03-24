@@ -14,11 +14,14 @@
 let cheerio = require('cheerio');
 let request = require('request');
 
-let pokemonList = require('./methods/pokemonList');
-let evolutionChart = require('./methods/evolutionChart');
-let masterTypeChart = require('./methods/masterTypeChart');
-let masterMoveList = require('./methods/masterMoveList');
-let masterAbilityList = require('./methods/masterAbilityList');
+let pokemonList = require('./scraperMethods/pokemonList');
+let evolutionChart = require('./scraperMethods/evolutionChart');
+let masterTypeChart = require('./scraperMethods/masterTypeChart');
+let masterMoveList = require('./scraperMethods/masterMoveList');
+let masterAbilityList = require('./scraperMethods/masterAbilityList');
+
+const initQuery = require('./dbMethods/initPokedex.js');
+let insert = require('./dbMethods/insertions.js');
 
 const pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
@@ -26,123 +29,11 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 const client = new pg.Client(connectionString);
 client.connect();
  
-const query = client.query(
-  `
-  	create schema pokedex;
-  	create table pokedex.main(
 
-  		unique_id 	varchar(10),
-  		national_id integer,
-  		name 		varchar(15),
-  		form 		varchar(15),
-  		type 		varchar[2],
-  		description varchar(300)
-  	);
-
-	create table pokedex.general(
-		
-		unique_id 		varchar(10) PRIMARY KEY,
-		species 		varchar(20),
-		weight 			varchar(20),
-		height 			varchar(20),
-		ability 		varchar(30),
-		hidden_ability 	varchar(30)
-	);
-
-	create table pokedex.moves(
-		
-		unique_id 	varchar(10),
-		method 		varchar(20),
-		name 		varchar(30),
-		level 		varchar(3),
-		type 		varchar[2],
-		cat 		varchar(15),
-		power 		integer,
-		acc 		integer
-	);	
-
-	create table pokedex.evolution(
-		
-		unique_id 	varchar(10) PRIMARY KEY,
-		stage_0 	varchar[1],
-		stage_1 	varchar[10],
-		stage_2 	varchar[10]
-	);
-
-	create table pokedex.base_stats(
-		
-		unique_id 			varchar(10) PRIMARY KEY,
-		hp 					integer,
-		attack 				integer,
-		defence 			integer,
-		special_attack 		integer,
-		spedical_defence 	integer,
-		speed 				integer
-	);
-
-	create table pokedex.min_stats(
-		
-		unique_id 			varchar(10) PRIMARY KEY,
-		hp 					integer,
-		attack 				integer,
-		defence 			integer,
-		special_attack 		integer,
-		spedical_defence 	integer,
-		speed 				integer
-	);
-
-	create table pokedex.max_stats(
-		
-		unique_id 			varchar(10) PRIMARY KEY,
-		hp 					integer,
-		attack 				integer,
-		defence 			integer,
-		special_attack 		integer,
-		spedical_defence 	integer,
-		speed 				integer
-	);
-
-	create table pokedex.location(
-		
-		unique_id 	varchar(10),
-		version 	varchar(50),
-		location 	varchar(50)
-	);
-
-	create table pokedex.abilities(
-		
-		name 		varchar(20) PRIMARY KEY,
-		description varchar(500)
-	);
-
-	create table pokedex.moves_description(
-		
-		name 		varchar(30) PRIMARY KEY,
-		description varchar(500)	
-	);			
-  `);
-query.on('end', () => { client.end(); });
+initQuery.on('end', () => {cliend.end(); });
+// query.on('end', () => { client.end(); });
 
 
-function main() {
-	
-	const baseUrl = "http://pokemondb.net";
-
-	let pokemonList = pokemonList.get(baseUrl);
-	// evolutionChart.get(baseUrl + '/evolution');	
-	// masterTypeChart.get(baseUrl + '/type/dual');
-	// masterMoveList.get(baseUrl + '/move/all');
-	// masterAbilityList.get(baseUrl + '/ability');
-
-	const query = query.client(
-		
-		`
-			insert ` + pokemonList.something + ` pokemon.main;
-
-		`
-
-	);
-}
 
 
 

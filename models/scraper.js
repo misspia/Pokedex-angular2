@@ -1,11 +1,11 @@
 let cheerio = require('cheerio');
 let request = require('request');
 
-let pokemonList = require('./methods/pokemonList');
-let evolutionChart = require('./methods/evolutionChart');
-let masterTypeChart = require('./methods/masterTypeChart');
-let masterMoveList = require('./methods/masterMoveList');
-let masterAbilityList = require('./methods/masterAbilityList');
+let pokemonList = require('./scraperMethods/pokemonList');
+let evolutionChart = require('./scraperMethods/evolutionChart');
+let masterTypeChart = require('./scraperMethods/masterTypeChart');
+let masterMoveList = require('./scraperMethods/masterMoveList');
+let masterAbilityList = require('./scraperMethods/masterAbilityList');
 
 main();
 

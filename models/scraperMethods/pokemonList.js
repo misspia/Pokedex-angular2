@@ -1,8 +1,6 @@
 let cheerio = require('cheerio');
 let fs = require('fs');
 let request = require('request');
-// let http = require('http');
-let https = require('https');
 let requestUrl = require('./helpers/requestUrl');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 
@@ -37,7 +35,6 @@ function getPokemonList(baseUrl) {
 function eachPokemonInList(td, baseUrl) {
 	let pokemon = {
 		id: parseInt(td.eq(0).text()),
-		idStr: td.eq(0).text().replace(/\s/g, ''),
 		icon: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
 		name: td.eq(1).children('a').eq(0).text().replace(/\\/g, '') ,
 		form: td.eq(1).find('.aside').text().toLowerCase(),
@@ -48,44 +45,51 @@ function eachPokemonInList(td, baseUrl) {
 	// if(pokemon.name.toLowerCase() == 'deoxys') {
 	if(pokemon.name.toLowerCase() == 'charizard') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
-		// console.log(pokemon);
-		enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
+		
+		//async issue
+		pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
+		console.log(pokemon.profile);
 	}
-
+	
 	return pokemon;
 }
 
 function enterPokemonProfile(url, form, pokemonName) {
-
+	
 	requestUrl(url).then( body => {
 		
 		let $ = cheerio.load(body);
+		let pokemonProfile;
 		let formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
 			main 	 = $('article');
 
 		if(form === "") {
 			let tabContainer = formTabs.children('a').eq(0).attr('href');
-			scrapeProfileSections($, tabContainer, main, pokemonName);
+			pokemonProfile = scrapeProfileSections($, tabContainer, main, pokemonName);
 
 		} else {
-			multipleForms($, form, formTabs, main, pokemonName);
+			pokemonProfile = multipleForms($, form, formTabs, main, pokemonName);
 		}		
+
+		return  pokemonProfile;
 
 	}).catch( err => {
 		console.log(err);
-	})
+	})	
+	
 }
 
 function multipleForms($, form, formTabs, main, pokemonName) {
-
+	let pokemonProfile;
 	$(formTabs).map( (i, element) => {
 
 		if(form == $(element).text().toLowerCase()) {
 
 			let tabContainer = $(element).children('a').attr('href');
-			scrapeProfileSections($, tabContainer, main, pokemonName);
+			pokemonProfile = scrapeProfileSections($, tabContainer, main, pokemonName);
 		}
 	})
+	return pokemonProfile;
 }
 
 
@@ -100,15 +104,18 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		locationTable = $(main).find('h2:contains("Where to find")').next(),
 		imgUrl = $(tab).find('.figure').find('img').attr('src');
 
-		scrapeSummaryTable($, summaryTable);
-		scrapeTrainingTable($, trainingTable);
-		scrapeBreedingTable($, breedingTable);
-		scrapeStatTable($, statTable);
-		scrapeEntryTable($, entryTable);
-		scrapeMovesSection($, movesSection);
-		scrapeLocationTable($, locationTable);
-
-		downloadImg(imgUrl, pokemonName);
+	let pokemonProfile = {
+		summary: scrapeSummaryTable($, summaryTable),
+		training: scrapeTrainingTable($, trainingTable),
+		breeding: scrapeBreedingTable($, breedingTable),
+		stats: scrapeStatTable($, statTable),
+		entry: scrapeEntryTable($, entryTable),
+		moves: scrapeMovesSection($, movesSection),
+		location: scrapeLocationTable($, locationTable)
+	}
+		
+	// downloadImg(imgUrl, pokemonName);
+	return pokemonProfile;
 }
 
 function downloadImg(imgUrl, pokemonName) {
@@ -121,17 +128,25 @@ function downloadImg(imgUrl, pokemonName) {
 		.pipe(fs.createWriteStream('./src/assets/images/'+ pokemonName.toLowerCase() + ".jpg"));
 }
 
-
 function scrapeSummaryTable($, table) {
 
 	let tbody = table.find('tbody');
-	let types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
-	let species = tbody.find('th:contains("Species")').next();
-	let height = tbody.find('th:contains("Height")').next();
-	let weight = tbody.find('th:contains("Weight")').next();
-	let abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
+
+	let summary = {
+		types: getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a')),
+		species: tbody.find('th:contains("Species")').next().text(),
+		height: tbody.find('th:contains("Height")').next().text(),
+		weight: tbody.find('th:contains("Weight")').next().text(),
+		abilities: getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'))
+	}
+	// let types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
+	// let species = tbody.find('th:contains("Species")').next();
+	// let height = tbody.find('th:contains("Height")').next();
+	// let weight = tbody.find('th:contains("Weight")').next();
+	// let abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
 	
-	// console.log(abilities);
+	return summary;
+
 }
 
 function scrapeTrainingTable($, table) {
@@ -142,11 +157,9 @@ function scrapeTrainingTable($, table) {
 		
 		let category = $(element).find('th').text();
 		training[category] = $(element).find('td').text().replace(/\t|\n/g, '');
-
 	})
 
-	// console.log(training);
-
+	return training;
 }
 
 function scrapeBreedingTable($, table) {
@@ -158,10 +171,9 @@ function scrapeBreedingTable($, table) {
 		
 		let category = $(element).find('th').text();
 		breeding[category] = $(element).find('td').text().replace(/\t|\n/g, '');
-
 	})
 
-	// console.log(breeding);
+	return breeding;
 }
 
 function scrapeStatTable($, table) {
@@ -182,7 +194,7 @@ function scrapeStatTable($, table) {
 			};	
 		}			
 	})
-	// console.log(stats);
+	return stats;
 }
 
 function scrapeEntryTable($, table) {
@@ -193,11 +205,10 @@ function scrapeEntryTable($, table) {
 	$(tr).map( (i, element) => {
 
 		let version = $(element).find('th').text();
-
 		entries[version] = $(element).find('td').text();
 	});
 
-	// console.log(entries);
+	return entries;
 }
 
 function scrapeMovesSection($, section) {
@@ -233,7 +244,7 @@ function scrapeMovesSection($, section) {
 		moves['byTM'].push(getFormattedMovesWithLevels($, $(element).find('td')));
 	});
 
-	// console.log(moves);
+	return moves;
 }
 
 function getFormattedMovesWithLevels($, nodeContainer) {
@@ -292,7 +303,7 @@ function scrapeLocationTable($, table) {
 		locations[version] = getArrayCharacteristics($, $(element).find('td'));
 	});
 
-	// console.log(locations);
+	return locations;
 }
 
 
