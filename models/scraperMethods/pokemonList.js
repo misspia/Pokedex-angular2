@@ -41,12 +41,13 @@ function eachPokemonInList(td, baseUrl) {
 		profileUrl: td.eq(1).children('a').attr('href')
 	};
 
+	
 	// if(pokemon.name.toLowerCase() == 'caterpie') {
 	// if(pokemon.name.toLowerCase() == 'deoxys') {
 	if(pokemon.name.toLowerCase() == 'charizard') {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		
-		//async issue
+		// async issue
 		pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
 		console.log(pokemon.profile);
 	}
@@ -72,9 +73,11 @@ function enterPokemonProfile(url, form, pokemonName) {
 		}		
 
 		return  pokemonProfile;
+		
 
 	}).catch( err => {
 		console.log(err);
+		return err;
 	})	
 	
 }
