@@ -91,6 +91,28 @@ const query = client.query(
 		
 		name 		varchar(30) PRIMARY KEY,
 		description varchar(500)	
+	);
+
+	create table pokedex.types(
+		defence 	varchar(20),
+		normal 		integer,
+		fire 		integer,
+		water 		integer,
+		electric 	integer,
+		grass 		integer,
+		ice 		integer,
+		fighting 	integer,
+		poison 		integer,
+		ground 		integer,
+		flying 		integer,
+		psychic		integer,
+		bug 		integer,
+		rock 		integer
+		ghost 		integer,
+		dragon 		integer,
+		dark 		integer,
+		steel 		integer,
+		fairy 		integer
 	);			
   `);
 

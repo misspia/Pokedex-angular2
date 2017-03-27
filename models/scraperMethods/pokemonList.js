@@ -40,7 +40,6 @@ function eachPokemonInList(td, baseUrl) {
 		form: td.eq(1).find('.aside').text().toLowerCase(),
 		profileUrl: td.eq(1).children('a').attr('href')
 	};
-
 	
 	// if(pokemon.name.toLowerCase() == 'caterpie') {
 	// if(pokemon.name.toLowerCase() == 'deoxys') {
@@ -49,7 +48,7 @@ function eachPokemonInList(td, baseUrl) {
 		
 		// async issue
 		pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
-		console.log(pokemon.profile);
+		// console.log(pokemon.profile);
 	}
 	
 	return pokemon;
@@ -71,7 +70,7 @@ function enterPokemonProfile(url, form, pokemonName) {
 		} else {
 			pokemonProfile = multipleForms($, form, formTabs, main, pokemonName);
 		}		
-
+		// console.log(pokemonProfile)
 		return  pokemonProfile;
 		
 
