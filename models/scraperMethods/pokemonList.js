@@ -20,8 +20,8 @@ function getPokemonList(baseUrl) {
 
 			let td = $(element).children('td');
 			let pokemon = eachPokemonInList(td, baseUrl);
-
-			pokedex.push(pokemon);
+			// console.log(pokemon);
+			// pokedex.push(pokemon);
 		});
 
 		// console.log(pokedex);
@@ -47,16 +47,21 @@ function eachPokemonInList(td, baseUrl) {
 	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 		
 		// async issue
-		pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
-		// console.log(pokemon.profile);
-	}
-	
-	return pokemon;
+		// pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
+
+		enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
+			pokemon['profile'] = profile;
+			console.log(pokemon.profile);
+			return pokemon;
+		})
+
+	}	
+	// return pokemon;
 }
 
 function enterPokemonProfile(url, form, pokemonName) {
 	
-	requestUrl(url).then( body => {
+	return requestUrl(url).then( body => {
 		
 		let $ = cheerio.load(body);
 		let pokemonProfile;
@@ -70,15 +75,13 @@ function enterPokemonProfile(url, form, pokemonName) {
 		} else {
 			pokemonProfile = multipleForms($, form, formTabs, main, pokemonName);
 		}		
-		// console.log(pokemonProfile)
 		return  pokemonProfile;
-		
 
 	}).catch( err => {
-		console.log(err);
-		return err;
+
+		return "ERROR: " + err;
 	})	
-	
+
 }
 
 function multipleForms($, form, formTabs, main, pokemonName) {
@@ -93,7 +96,6 @@ function multipleForms($, form, formTabs, main, pokemonName) {
 	})
 	return pokemonProfile;
 }
-
 
 function scrapeProfileSections($, tab, main, pokemonName) {
 
