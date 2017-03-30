@@ -19,9 +19,11 @@ function getPokemonList(baseUrl) {
 		$(pokemonRow).map( (i, element) => {
 
 			let td = $(element).children('td');
-			let pokemon = eachPokemonInList(td, baseUrl);
-			// console.log(pokemon);
-			// pokedex.push(pokemon);
+
+			eachPokemonInList(td, baseUrl).then( pokemon => {
+				console.log(pokemon);
+				pokedex.push(pokemon);
+			});
 		});
 
 		// console.log(pokedex);
@@ -29,33 +31,38 @@ function getPokemonList(baseUrl) {
 	}).catch( err => {
 		console.log(err)
 	});
+	// I HAVE A FEELING THIS IS BROKEN BUT LEMME KNOW PLEASE
 	return pokedex;
 }
 
 function eachPokemonInList(td, baseUrl) {
-	let pokemon = {
-		id: parseInt(td.eq(0).text()),
-		icon: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
-		name: td.eq(1).children('a').eq(0).text().replace(/\\/g, '') ,
-		form: td.eq(1).find('.aside').text().toLowerCase(),
-		profileUrl: td.eq(1).children('a').attr('href')
-	};
-	
-	// if(pokemon.name.toLowerCase() == 'caterpie') {
-	// if(pokemon.name.toLowerCase() == 'deoxys') {
-	if(pokemon.name.toLowerCase() == 'charizard') {
-	// if(pokemon.name.toLowerCase() == 'bulbasaur') {
+	return new Promise ( (resolve, reject) => {
+		let pokemon = {
+			id: parseInt(td.eq(0).text()),
+			icon: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
+			name: td.eq(1).children('a').eq(0).text().replace(/\\/g, '') ,
+			form: td.eq(1).find('.aside').text().toLowerCase(),
+			profileUrl: td.eq(1).children('a').attr('href')
+		};
 		
-		// async issue
-		// pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
+		// if(pokemon.name.toLowerCase() == 'caterpie') {
+		// if(pokemon.name.toLowerCase() == 'deoxys') {
+		if(pokemon.name.toLowerCase() == 'charizard') {
+		// if(pokemon.name.toLowerCase() == 'bulbasaur') {
+			
+			// async issue
+			// pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
+			
+			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
+				pokemon['profile'] = profile;
+				console.log(pokemon.profile);
+				resolve(pokemon);
+			});
 
-		enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
-			pokemon['profile'] = profile;
-			console.log(pokemon.profile);
-			return pokemon;
-		})
-
-	}	
+		} else {
+			reject('These are not the Pokemon you\'re looking for.')
+		}
+	});
 	// return pokemon;
 }
 
@@ -75,6 +82,7 @@ function enterPokemonProfile(url, form, pokemonName) {
 		} else {
 			pokemonProfile = multipleForms($, form, formTabs, main, pokemonName);
 		}		
+	
 		return  pokemonProfile;
 
 	}).catch( err => {
