@@ -21,8 +21,14 @@ function getPokemonList(baseUrl) {
 			let td = $(element).children('td');
 
 			eachPokemonInList(td, baseUrl).then( pokemon => {
-				console.log(pokemon);
+				
 				pokedex.push(pokemon);
+				return pokedex;
+
+			}).then( pokedex => {
+
+				console.log(pokedex);
+				return pokedex;
 			});
 		});
 
@@ -50,17 +56,13 @@ function eachPokemonInList(td, baseUrl) {
 		if(pokemon.name.toLowerCase() == 'charizard') {
 		// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 			
-			// async issue
-			// pokemon['profile'] = enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form);
-			
 			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
 				pokemon['profile'] = profile;
-				console.log(pokemon.profile);
 				resolve(pokemon);
 			});
 
 		} else {
-			reject('These are not the Pokemon you\'re looking for.')
+			// reject('These are not the Pokemon you\'re looking for.')
 		}
 	});
 	// return pokemon;
@@ -89,7 +91,6 @@ function enterPokemonProfile(url, form, pokemonName) {
 
 		return "ERROR: " + err;
 	})	
-
 }
 
 function multipleForms($, form, formTabs, main, pokemonName) {
@@ -151,14 +152,8 @@ function scrapeSummaryTable($, table) {
 		weight: tbody.find('th:contains("Weight")').next().text(),
 		abilities: getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'))
 	}
-	// let types = getArrayCharacteristics($, tbody.find('th:contains("Type")').next().children('a'))
-	// let species = tbody.find('th:contains("Species")').next();
-	// let height = tbody.find('th:contains("Height")').next();
-	// let weight = tbody.find('th:contains("Weight")').next();
-	// let abilities = getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'));
 	
 	return summary;
-
 }
 
 function scrapeTrainingTable($, table) {
