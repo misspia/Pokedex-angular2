@@ -6,7 +6,7 @@ let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 
 getPokemonList("http://pokemondb.net");
 
-function getPokemonList(baseUrl) {
+function getPokemonList(baseUrl, callback) {
 	
 	let requestPokedex = requestUrl(baseUrl + "/pokedex/all");
 	let pokedex = [];
@@ -27,18 +27,13 @@ function getPokemonList(baseUrl) {
 
 			}).then( pokedex => {
 
-				console.log(pokedex);
-				return pokedex;
+				callback(pokedex);
 			});
 		});
-
-		// console.log(pokedex);
 
 	}).catch( err => {
 		console.log(err)
 	});
-	// I HAVE A FEELING THIS IS BROKEN BUT LEMME KNOW PLEASE
-	return pokedex;
 }
 
 function eachPokemonInList(td, baseUrl) {

@@ -1,9 +1,11 @@
 let cheerio = require('cheerio');
 let requestUrl = require('./helpers/requestUrl');
 
-//////////////////// DUAL TYPE CHART ////////////////////////
 
-function getMasterTypeChart(url) {
+
+// getMasterTypeChart("http://pokemondb.net/type/dual");
+
+function getMasterTypeChart(url, callback) {
 	
 	let requestMasterTypeChart = requestUrl(url);
 
@@ -11,40 +13,58 @@ function getMasterTypeChart(url) {
 
 		let $ = cheerio.load(body),
 			masterTable = $('#dualtypechart').find('tbody');
+
+		scrapeMasterTypeChart($, masterTable, chart => {
 			
-		let masterTypeChart = scrapeMasterTypeChart($, masterTable);
-
-	}).catch( err => {
-
-		console.log(err);
-	});
-	return masterTypeChart;
+			callback(chart);
+		})
+	})
 }
 
-function scrapeMasterTypeChart($, master) {
+function scrapeMasterTypeChart($, master, callback) {
 
 	let typeEffects = [];
+	let attackTypeKeys = getAttackTypes($, master);
 
 	$($(master).children('tr')).map( (index, type) => {
 
 		if($(type).attr('class') == 'hasPkmn' || $(type).attr('class') == 'noPkmn') {
-			typeEffects.push(scrapeTypeRow($, type));
+			typeEffects.push( scrapeTypeRow($, type, attackTypeKeys) );
 		}
 	})
-	console.log(typeEffects);
-	return typeEffects;
+	
+	callback(typeEffects);
 }
 
-function scrapeTypeRow($, typeRow) {
+function scrapeTypeRow($, typeRow, attackTypeKeys) {
 
 	let currentTypes = $(typeRow).find('th');
 	let key = formatTypeKey($, currentTypes);
-	let effectValues = getTypeEffectValues($, typeRow);
+	
+	let effectValues = getTypeEffectValues($, typeRow, attackTypeKeys);
 	let type = {};
 
 	type[key] = effectValues;
 
 	return type;
+}
+
+function getAttackTypes($, master) {
+	
+	let firstRowCells = $(master).children('tr').eq(0).children('th'),
+		types = {};
+
+	$(firstRowCells).map( (index, cell) => {
+
+		if($(cell).attr('class') != 'cell-nano') {
+
+			let type = $(cell).find('a').attr('title').toLowerCase();
+
+			// -2 to account for the two preceeding cells
+			types[index-2] = type;
+		}	
+	});
+	return types;
 }
 
 function formatTypeKey($, nameContainer) {
@@ -56,21 +76,18 @@ function formatTypeKey($, nameContainer) {
 	return name.toLowerCase();
 }
 
-function getTypeEffectValues($, typeRow) {
+function getTypeEffectValues($, typeRow, attackTypeKeys) {
 	
-	let effectCells = $(typeRow).children('.type-fx-cell');
-	let effectsArr = [];
+	let effectCells = $(typeRow).children('.type-fx-cell'),
+		effectsObj = {};
 
 	$(effectCells).map( (index, cell) => {
 		
-		// let effectValue = $(cell).text();
 		let effectValue = $(cell).attr('class').replace('type-fx-cell type-fx-', '');
-
-		effectsArr.push(effectValue);
+		
+		effectsObj[ attackTypeKeys[index] ] = effectValue;
 	});
-
-	console.log(effectsArr);
-	return effectsArr;
+	return effectsObj;
 }
 
 module.exports = {

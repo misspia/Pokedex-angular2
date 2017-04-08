@@ -20,7 +20,7 @@ let masterTypeChart = require('./scraperMethods/masterTypeChart');
 let masterMoveList = require('./scraperMethods/masterMoveList');
 let masterAbilityList = require('./scraperMethods/masterAbilityList');
 
-const initQuery = require('./dbMethods/initPokedex.js');
+const createTables = require('./dbMethods/createTables.js');
 let insert = require('./dbMethods/insertions.js');
 
 const pg = require('pg');
@@ -29,6 +29,8 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 const client = new pg.Client(connectionString);
 client.connect();
  
+
+ const query = client.query();
 
 initQuery.on('end', () => {cliend.end(); });
 // query.on('end', () => { client.end(); });

@@ -2,11 +2,12 @@
 // table name is object key (assuming use of for in loops)
 function insert(table, obj){
 
-	query.client(
-		'insert into pokemon.' + table + '(' + commaSeparateFields(obj, true) + ') ' +
-		'values (' + commaSeparateFields(obj) + ');'
- 	);
+	var query =	'insert into pokemon.' + table + '(' + commaSeparateFields(obj, true) + ') ' +
+				'values (' + commaSeparateFields(obj) + ');'
+
+	return query;
 }
+
 
 function commaSeparateFields(obj, columnHead = false) {
 	let fields = "";

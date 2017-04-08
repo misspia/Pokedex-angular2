@@ -1,4 +1,4 @@
-const query = client.query(
+const createTables = 
   `
   	create schema pokedex;
   	create table pokedex.main(
@@ -114,8 +114,8 @@ const query = client.query(
 		steel 		integer,
 		fairy 		integer
 	);			
-  `);
+  
 
 
 
-exports.query = query;
+exports.createTables = createTables;
