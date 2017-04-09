@@ -1,10 +1,6 @@
 let cheerio = require('cheerio');
 let requestUrl = require('./helpers/requestUrl');
 
-
-
-// getMasterTypeChart("http://pokemondb.net/type/dual");
-
 function getMasterTypeChart(url, callback) {
 	
 	let requestMasterTypeChart = requestUrl(url);

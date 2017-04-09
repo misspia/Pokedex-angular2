@@ -6,7 +6,7 @@ function writeFile(filepath, data) {
 
 		if (error) return console.log(error);
 
-	 		console.log('writing complete');
+	 		console.log('writing complete: ' + filepath);
 	});
 }
 

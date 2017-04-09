@@ -1,9 +1,7 @@
 let cheerio = require('cheerio');
 let requestUrl = require('./helpers/requestUrl');
 
-////////////////////////EVOLUTIONS////////////////////////
-
-function getEvolutionChart(url) {
+function getEvolutionChart(url, callback) {
 
 	let requestEvolution = requestUrl(url); 
 
@@ -11,18 +9,17 @@ function getEvolutionChart(url) {
 
 		let $ = cheerio.load(body);
 		let family = $('.infocard-evo-list');
-		let allFamilies = [];
-		
-		allFamilies.push(scrapeEachEvolFamily($, family));
+		let allFamilies = scrapeEachEvolFamily($, family);
+
+		callback(allFamilies);
 		
 	}).catch( err => {
-
 		console.log(err);
 	});
-	return allFamilies;
 }
 
 function scrapeEachEvolFamily($, family) {
+	let allFamilies = [];	
 
 	$(family).map( (i, family) => {
 			
@@ -48,8 +45,10 @@ function scrapeEachEvolFamily($, family) {
 				}					
 			})
 		}
-		// console.log(tree)
+		allFamilies.push(tree);
 	})
+
+	return allFamilies;
 }
 
 
@@ -78,7 +77,6 @@ function unGroupedEvolStage($, stage, member, specialCase = false)  {
 				memberInfo['condition'] = $(conditionContainer).text().replace(/[^0-9a-zA-Z, ]/g, '').split(',');
 		}	
 	}
-	// console.log(memberInfo);
 	return memberInfo;
 }
 
@@ -104,7 +102,6 @@ function eeveeEvolutionCase($, tree) {
 	memberInfo['stage0'] = [unGroupedEvolStage($, 0, $(tree).children('span').eq(1))];
 	memberInfo['stage1'] = groupedEvolStageEevee($, 1, eeveeLeft, eeveeRight);
 
-	// console.log(JSON.stringify(memberInfo));
 	return memberInfo;
 }
 
@@ -119,7 +116,6 @@ function groupedEvolStageEevee($, stage, groupLeft, groupRight) {
 
 		stageMembers.push(memberInfo);
 	});
-
 
 	$($(groupRight).children('span').not('.small')).map( (index, member) => {
 		
@@ -158,7 +154,7 @@ function doubleGroupedEvolCase($, tree) {
 	memberInfo['stage2'] = [unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(3))];
 	memberInfo['stage2'].push(unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(7)));
 
-	console.log(JSON.stringify(memberInfo));
+	return memberInfo;
 }
 
 

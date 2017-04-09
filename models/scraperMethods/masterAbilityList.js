@@ -1,25 +1,21 @@
 let cheerio = require('cheerio');
 let requestUrl = require('./helpers/requestUrl');
 
-//////////////////// ABILITY LIST ////////////////////////
-
-function getMasterAbilityList(url) {
+function getMasterAbilityList(url, callback) {
 	
 	let requestMasterAbilityList = requestUrl(url);
 
 	requestMasterAbilityList.then( body => {
 
 		let $ = cheerio.load(body),
-			masterTable = $('#abilities');
-			console.log(masterTable)
-		let masterAbilityList = scrapeMasterAbilityList($, masterTable);
+			masterTable = $('#abilities'),
+			masterAbilityList = scrapeMasterAbilityList($, masterTable);
+		
+		callback(masterAbilityList);
 
 	}).catch( err => {
-
 		console.log(err);
 	});
-
-	return masterAbilityList;
 }
 
 function scrapeMasterAbilityList($, master) {
@@ -29,7 +25,7 @@ function scrapeMasterAbilityList($, master) {
 	$($(master).find('tbody').children('tr')).map( (index, ability) => {
 		abilityList.push(scrapeAbilityRow($, $(ability).find('td')));
 	})
-	console.log(abilityList);
+	
 	return abilityList;
 }
 

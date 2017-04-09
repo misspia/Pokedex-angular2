@@ -1,10 +1,8 @@
 let cheerio = require('cheerio');
-let fs = require('fs');
 let request = require('request');
 let requestUrl = require('./helpers/requestUrl');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 
-getPokemonList("http://pokemondb.net");
 
 function getPokemonList(baseUrl, callback) {
 	
