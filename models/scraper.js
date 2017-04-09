@@ -12,7 +12,7 @@ function main() {
 	const baseUrl = "http://pokemondb.net";
 
 	pokemonList.get(baseUrl, list => {
-		writeFile.json('./json/masterPokemonList.json', list);
+		writeFile.json('./json/pokemon.json', list);
 	})
 	evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
 		writeFile.json('./json/evolution.json', evolFamilies);
@@ -26,7 +26,7 @@ function main() {
 	masterMoveList.get(baseUrl + '/move/all', moves => {
 		writeFile.json('./json/moves.json', moves);
 	});
-	
+
 	masterAbilityList.get(baseUrl + '/ability', abilities => {
 		writeFile.json('./json/abilities.json', abilities);
 	});

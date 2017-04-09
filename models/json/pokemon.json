@@ -1,0 +1,26 @@
+[
+    {
+        "id": 6,
+        "unique_id": "n6-mega-x",
+        "name": "Charizard",
+        "form": "mega charizard x",
+        "profileUrl": "/pokedex/charizard",
+        "profile": "ERROR: ReferenceError: fs is not defined"
+    },
+    {
+        "id": 6,
+        "unique_id": "n6",
+        "name": "Charizard",
+        "form": "",
+        "profileUrl": "/pokedex/charizard",
+        "profile": "ERROR: ReferenceError: fs is not defined"
+    },
+    {
+        "id": 6,
+        "unique_id": "n6-mega-y",
+        "name": "Charizard",
+        "form": "mega charizard y",
+        "profileUrl": "/pokedex/charizard",
+        "profile": "ERROR: ReferenceError: fs is not defined"
+    }
+]

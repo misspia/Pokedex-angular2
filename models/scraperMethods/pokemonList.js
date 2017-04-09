@@ -1,6 +1,7 @@
 let cheerio = require('cheerio');
 let request = require('request');
 let requestUrl = require('./helpers/requestUrl');
+let randTimer = require('./helpers/randTimer');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 
 
@@ -38,18 +39,23 @@ function eachPokemonInList(td, baseUrl) {
 	return new Promise ( (resolve, reject) => {
 		let pokemon = {
 			id: parseInt(td.eq(0).text()),
-			icon: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
+			unique_id: td.eq(0).children('i').attr('data-sprite').split(' ')[1],
 			name: td.eq(1).children('a').eq(0).text().replace(/\\/g, '') ,
 			form: td.eq(1).find('.aside').text().toLowerCase(),
 			profileUrl: td.eq(1).children('a').attr('href')
 		};
+
+		// setTimeout(enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
+		// 	pokemon['profile'] = profile;
+		// 	resolve(pokemon);
+		// }), randTimer());
 		
 		// if(pokemon.name.toLowerCase() == 'caterpie') {
 		// if(pokemon.name.toLowerCase() == 'deoxys') {
 		if(pokemon.name.toLowerCase() == 'charizard') {
 		// if(pokemon.name.toLowerCase() == 'bulbasaur') {
 			
-			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
+			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + pokemon.form).then( profile => {
 				pokemon['profile'] = profile;
 				resolve(pokemon);
 			});
@@ -58,13 +64,13 @@ function eachPokemonInList(td, baseUrl) {
 			// reject('These are not the Pokemon you\'re looking for.')
 		}
 	});
-	// return pokemon;
 }
 
 function enterPokemonProfile(url, form, pokemonName) {
 	
 	return requestUrl(url).then( body => {
-		
+		console.log("now scraping " + pokemonName);
+
 		let $ = cheerio.load(body);
 		let pokemonProfile;
 		let formTabs = $('.tabset-basics .svtabs-tab-list').children('.svtabs-tab'),
@@ -120,7 +126,7 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		location: scrapeLocationTable($, locationTable)
 	}
 		
-	// downloadImg(imgUrl, pokemonName);
+	downloadImg(imgUrl, pokemonName);
 	return pokemonProfile;
 }
 
