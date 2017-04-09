@@ -3,6 +3,13 @@ let request = require('request');
 let requestUrl = require('./helpers/requestUrl');
 let randTimer = require('./helpers/randTimer');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
+let fs = require('fs');
+
+
+
+getPokemonList("http://pokemondb.net", pokedex => {
+	console.log("")
+});
 
 
 function getPokemonList(baseUrl, callback) {
@@ -57,6 +64,7 @@ function eachPokemonInList(td, baseUrl) {
 			
 			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + pokemon.form).then( profile => {
 				pokemon['profile'] = profile;
+				// console.log(pokemon.profile);
 				resolve(pokemon);
 			});
 
@@ -126,18 +134,8 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		location: scrapeLocationTable($, locationTable)
 	}
 		
-	downloadImg(imgUrl, pokemonName);
+	// downloadImg(imgUrl, pokemonName);
 	return pokemonProfile;
-}
-
-function downloadImg(imgUrl, pokemonName) {
-	
-	request(imgUrl)
-		.on('error', function(err) {
-		    console.log("couldn't download " + pokemonName);
-		  
-		})
-		.pipe(fs.createWriteStream('./src/assets/images/'+ pokemonName.toLowerCase() + ".jpg"));
 }
 
 function scrapeSummaryTable($, table) {

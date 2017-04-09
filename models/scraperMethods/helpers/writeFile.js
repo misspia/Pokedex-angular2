@@ -10,6 +10,17 @@ function writeFile(filepath, data) {
 	});
 }
 
+function writeImage(imgUrl, pokemonName) {
+	
+	request(imgUrl)
+		.on('error', function(err) {
+		    console.log("couldn't download " + pokemonName);
+		  
+		})
+		.pipe(fs.createWriteStream('./src/assets/images/'+ pokemonName.toLowerCase() + ".jpg"));
+}
+
 module.exports = {
-	json: writeFile
+	json: writeFile,
+	image: writeImage
 }
