@@ -6,12 +6,6 @@ let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
 let fs = require('fs');
 
 
-
-getPokemonList("http://pokemondb.net", pokedex => {
-	console.log("")
-});
-
-
 function getPokemonList(baseUrl, callback) {
 	
 	let requestPokedex = requestUrl(baseUrl + "/pokedex/all");
@@ -134,7 +128,7 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		location: scrapeLocationTable($, locationTable)
 	}
 		
-	// downloadImg(imgUrl, pokemonName);
+	// writeFile.image(imgUrl, pokemwonName);
 	return pokemonProfile;
 }
 
@@ -149,7 +143,6 @@ function scrapeSummaryTable($, table) {
 		weight: tbody.find('th:contains("Weight")').next().text(),
 		abilities: getArrayCharacteristics($, tbody.find('th:contains("Abilities")').next().find('a'))
 	}
-	
 	return summary;
 }
 

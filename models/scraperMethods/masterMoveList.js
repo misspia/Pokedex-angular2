@@ -25,7 +25,6 @@ function scrapeMasterMoveList($, master) {
 	$($(master).find('tbody').children('tr')).map( (index, move) => {
 		moveList.push(scrapeMoveRow($, $(move).find('td')));
 	})
-	console.log(moveList);
 	return moveList;
 }
 

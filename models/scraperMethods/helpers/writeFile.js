@@ -11,6 +11,7 @@ function writeFile(filepath, data) {
 }
 
 function writeImage(imgUrl, pokemonName) {
+	console.log("requesting image of " + pokemonName);
 	
 	request(imgUrl)
 		.on('error', function(err) {

@@ -114,8 +114,6 @@ const createTables =
 		steel 		integer,
 		fairy 		integer
 	);			
-  
+`
 
-
-
-exports.createTables = createTables;
+exports.tables = createTables;
