@@ -1,6 +1,9 @@
 let cheerio = require('cheerio');
 let requestUrl = require('./helpers/requestUrl');
 
+// getEvolutionChart("http://pokemondb.net/evolution",  function(){});
+
+
 function getEvolutionChart(url, callback) {
 
 	let requestEvolution = requestUrl(url); 
@@ -30,7 +33,7 @@ function scrapeEachEvolFamily($, family) {
 			tree = eeveeEvolutionCase($, family);
 
 		} else if($(family).text().indexOf('Wurmple') >= 0 || $(family).text().indexOf('Nincada') >= 0) {				
-			doubleGroupedEvolCase($, family);
+			tree = doubleGroupedEvolCase($, family);
 
 		} else if($(family).text().indexOf('Burmy') >= 0 ) {
 			tree = burmyEvolutionCase($, family);
@@ -153,7 +156,7 @@ function doubleGroupedEvolCase($, tree) {
 
 	memberInfo['stage2'] = [unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(3))];
 	memberInfo['stage2'].push(unGroupedEvolStage($, 2, $(tree).children('span').eq(1).children('span').eq(7)));
-
+	// console.log(memberInfo);
 	return memberInfo;
 }
 

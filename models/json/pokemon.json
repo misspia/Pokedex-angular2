@@ -1,21 +1,21 @@
 [
     {
         "id": 6,
-        "unique_id": "n6-mega-y",
+        "unique_id": "n6-mega-x",
         "name": "Charizard",
-        "form": "mega charizard y",
+        "form": "mega charizard x",
         "profileUrl": "/pokedex/charizard",
         "profile": {
             "summary": {
                 "types": [
                     "Fire",
-                    "Flying"
+                    "Dragon"
                 ],
                 "species": "Flame Pokémon",
                 "height": "5′7″ (1.70m)",
-                "weight": "221.6 lbs (100.5 kg)",
+                "weight": "243.6 lbs (110.5 kg)",
                 "abilities": [
-                    "Drought"
+                    "Tough Claws"
                 ]
             },
             "training": {
@@ -37,24 +37,24 @@
                     "max": "360"
                 },
                 "Attack": {
-                    "base": "104",
-                    "min": "191",
-                    "max": "337"
+                    "base": "130",
+                    "min": "238",
+                    "max": "394"
                 },
                 "Defense": {
-                    "base": "78",
-                    "min": "144",
-                    "max": "280"
+                    "base": "111",
+                    "min": "204",
+                    "max": "353"
                 },
                 "Sp. Atk": {
-                    "base": "159",
-                    "min": "290",
-                    "max": "458"
+                    "base": "130",
+                    "min": "238",
+                    "max": "394"
                 },
                 "Sp. Def": {
-                    "base": "115",
-                    "min": "211",
-                    "max": "361"
+                    "base": "85",
+                    "min": "157",
+                    "max": "295"
                 },
                 "Speed": {
                     "base": "100",
@@ -753,21 +753,21 @@
     },
     {
         "id": 6,
-        "unique_id": "n6-mega-x",
+        "unique_id": "n6-mega-y",
         "name": "Charizard",
-        "form": "mega charizard x",
+        "form": "mega charizard y",
         "profileUrl": "/pokedex/charizard",
         "profile": {
             "summary": {
                 "types": [
                     "Fire",
-                    "Dragon"
+                    "Flying"
                 ],
                 "species": "Flame Pokémon",
                 "height": "5′7″ (1.70m)",
-                "weight": "243.6 lbs (110.5 kg)",
+                "weight": "221.6 lbs (100.5 kg)",
                 "abilities": [
-                    "Tough Claws"
+                    "Drought"
                 ]
             },
             "training": {
@@ -789,24 +789,24 @@
                     "max": "360"
                 },
                 "Attack": {
-                    "base": "130",
-                    "min": "238",
-                    "max": "394"
+                    "base": "104",
+                    "min": "191",
+                    "max": "337"
                 },
                 "Defense": {
-                    "base": "111",
-                    "min": "204",
-                    "max": "353"
+                    "base": "78",
+                    "min": "144",
+                    "max": "280"
                 },
                 "Sp. Atk": {
-                    "base": "130",
-                    "min": "238",
-                    "max": "394"
+                    "base": "159",
+                    "min": "290",
+                    "max": "458"
                 },
                 "Sp. Def": {
-                    "base": "85",
-                    "min": "157",
-                    "max": "295"
+                    "base": "115",
+                    "min": "211",
+                    "max": "361"
                 },
                 "Speed": {
                     "base": "100",

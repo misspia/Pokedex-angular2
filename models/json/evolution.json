@@ -2056,7 +2056,44 @@
             }
         ]
     },
-    {},
+    {
+        "stage0": [
+            {
+                "name": "Wurmple",
+                "condition": []
+            }
+        ],
+        "stage1": [
+            {
+                "name": "Silcoon",
+                "condition": [
+                    "Level 7",
+                    " randombased on personality"
+                ]
+            },
+            {
+                "name": "Cascoon",
+                "condition": [
+                    "Level 7",
+                    " randombased on personality"
+                ]
+            }
+        ],
+        "stage2": [
+            {
+                "name": "Beautifly",
+                "condition": [
+                    "Level 10"
+                ]
+            },
+            {
+                "name": "Dustox",
+                "condition": [
+                    "Level 10"
+                ]
+            }
+        ]
+    },
     {
         "stage0": [
             {
@@ -2223,7 +2260,44 @@
             }
         ]
     },
-    {},
+    {
+        "stage0": [
+            {
+                "name": "Nincada",
+                "condition": []
+            }
+        ],
+        "stage1": [
+            {
+                "name": "Ninjask",
+                "condition": [
+                    "Level 20"
+                ]
+            },
+            {
+                "name": "Shedinja",
+                "condition": [
+                    ""
+                ]
+            }
+        ],
+        "stage2": [
+            {
+                "name": "Ninjask",
+                "condition": [
+                    "Level 20",
+                    " emptyspot in party",
+                    "Pokball in bag"
+                ]
+            },
+            {
+                "name": "",
+                "condition": [
+                    ""
+                ]
+            }
+        ]
+    },
     {
         "stage0": [
             {
