@@ -2,8 +2,12 @@ let cheerio = require('cheerio');
 let request = require('request');
 let requestUrl = require('./helpers/requestUrl');
 let randTimer = require('./helpers/randTimer');
+let sleepFor = require('./helpers/sleep');
 let getArrayCharacteristics = require('./helpers/getArrayCharacteristics');
+let writeFile = require('./helpers/writeFile');
 let fs = require('fs');
+let EventEmitter = require('events');
+require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 
 function getPokemonList(baseUrl, callback) {
@@ -45,31 +49,26 @@ function eachPokemonInList(td, baseUrl) {
 			form: td.eq(1).find('.aside').text().toLowerCase(),
 			profileUrl: td.eq(1).children('a').attr('href')
 		};
-
-		// setTimeout(enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + "-" + pokemon.form).then( profile => {
-		// 	pokemon['profile'] = profile;
-		// 	resolve(pokemon);
-		// }), randTimer());
-		
+		resolve(pokemon);
 		// if(pokemon.name.toLowerCase() == 'caterpie') {
 		// if(pokemon.name.toLowerCase() == 'deoxys') {
-		if(pokemon.name.toLowerCase() == 'charizard') {
-		// if(pokemon.name.toLowerCase() == 'bulbasaur') {
+		// if(pokemon.name.toLowerCase() == 'charizard') {
+		// if(pokemon.name.toLowerCase() == 'bulbasaur' || pokemon.name.toLowerCase() == 'charizard' || pokemon.name.toLowerCase() == 'deoxys' || pokemon.name.toLowerCase() == 'caterpie') {
 			
+			// setTimeout(enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + pokemon.form).then( profile => {
+			// 	writeFile.json('./json/' + pokemon.unique_id + '.json', profile);
+			// }), randTimer());
 			enterPokemonProfile(baseUrl + pokemon.profileUrl, pokemon.form, pokemon.name + pokemon.form).then( profile => {
-				pokemon['profile'] = profile;
-				// console.log(pokemon.profile);
-				resolve(pokemon);
+				writeFile.json('./json/' + pokemon.unique_id + '.json', profile);
+				
 			});
 
-		} else {
-			// reject('These are not the Pokemon you\'re looking for.')
-		}
+		// } 
 	});
 }
 
 function enterPokemonProfile(url, form, pokemonName) {
-	
+	sleepFor(randTimer);
 	return requestUrl(url).then( body => {
 		console.log("now scraping " + pokemonName);
 

@@ -4,6 +4,8 @@ let evolutionChart = require('./scraperMethods/evolutionChart');
 let masterTypeChart = require('./scraperMethods/masterTypeChart');
 let masterMoveList = require('./scraperMethods/masterMoveList');
 let masterAbilityList = require('./scraperMethods/masterAbilityList');
+let EventEmitter = require('events');
+require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 main();
 
@@ -14,20 +16,20 @@ function main() {
 	pokemonList.get(baseUrl, list => {
 		writeFile.json('./json/pokemon.json', list);
 	})
-	evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
-		writeFile.json('./json/evolution.json', evolFamilies);
-	});	
+	// evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
+	// 	writeFile.json('./json/evolution.json', evolFamilies);
+	// });	
 
-	masterTypeChart.get(baseUrl + '/type/dual', types => {
-		writeFile.json('./json/types.json', types);
+	// masterTypeChart.get(baseUrl + '/type/dual', types => {
+	// 	writeFile.json('./json/types.json', types);
 
-	});
+	// });
 
-	masterMoveList.get(baseUrl + '/move/all', moves => {
-		writeFile.json('./json/moves.json', moves);
-	});
+	// masterMoveList.get(baseUrl + '/move/all', moves => {
+	// 	writeFile.json('./json/moves.json', moves);
+	// });
 
-	masterAbilityList.get(baseUrl + '/ability', abilities => {
-		writeFile.json('./json/abilities.json', abilities);
-	});
+	// masterAbilityList.get(baseUrl + '/ability', abilities => {
+	// 	writeFile.json('./json/abilities.json', abilities);
+	// });
 }
