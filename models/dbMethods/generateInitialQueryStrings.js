@@ -69,15 +69,16 @@ fs.unlink(filepath, cb => {
 						formattedString = 'INSERT into pokedex.evolutions (base, stage0, stage1, stage2, condition) VALUES (\'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage1'][i1].name + '\', \'' + evolutionsDict[i]['stage2'][i2].name + '\', \'' + evolutionsDict[i]['stage0'][0].condition + '\');\n';
 						formattedString += 'INSERT into pokedex.evolutions (base, stage0, condition) VALUES (\'' + evolutionsDict[i]['stage1'][i1].name + '\', \'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage1'][i1].condition + '\');\n';
 						formattedString += 'INSERT into pokedex.evolutions (base, stage0, condition) VALUES (\'' + evolutionsDict[i]['stage2'][i2].name + '\', \'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage2'][i2].condition + '\');\n';
+						fs.appendFileSync(filepath, formattedString);
 					}
 				} else {
 					formattedString = 'INSERT into pokedex.evolutions (base, stage0, stage1, condition) VALUES (\'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage1'][i1].name + '\', \'' + evolutionsDict[i]['stage0'][0].condition + '\');\n';
 					formattedString += 'INSERT into pokedex.evolutions (base, stage0, condition) VALUES (\'' + evolutionsDict[i]['stage1'][i1].name + '\', \'' + evolutionsDict[i]['stage0'][0].name + '\', \'' + evolutionsDict[i]['stage1'][i1].condition + '\');\n';
+					fs.appendFileSync(filepath, formattedString);
 				}
 			}
 
 		}
-		fs.appendFileSync(filepath, formattedString);
 	}
 
 });
