@@ -115,7 +115,7 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		entryTable = $(main).find('h2:contains("Pokédex entries")').next(),
 		movesSection = $(main).find('h2:contains("Moves learned by")').next().next().remove('.hidden'),
 		locationTable = $(main).find('h2:contains("Where to find")').next(),
-		imgUrl = $(tab).find('.figure').find('img').attr('src');
+		imageUrl = $(tab).find('.figure').find('img').attr('src');
 
 	let pokemonProfile = {
 		summary: scrapeSummaryTable($, summaryTable),
@@ -124,7 +124,8 @@ function scrapeProfileSections($, tab, main, pokemonName) {
 		stats: scrapeStatTable($, statTable),
 		entry: scrapeEntryTable($, entryTable),
 		moves: scrapeMovesSection($, movesSection),
-		location: scrapeLocationTable($, locationTable)
+		location: scrapeLocationTable($, locationTable),
+		imageUrl: imageUrl
 	}
 		
 	// writeFile.image(imgUrl, pokemwonName);
@@ -305,5 +306,6 @@ function scrapeLocationTable($, table) {
 
 
 module.exports = {
-	get: getPokemonList
+	get: getPokemonList,
+	enterProfile: enterPokemonProfile
 }

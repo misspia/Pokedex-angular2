@@ -1,4 +1,5 @@
 let fs = require('fs');
+var request = require('request');
 
 function writeFile(filepath, data) {
 
@@ -10,15 +11,22 @@ function writeFile(filepath, data) {
 	});
 }
 
-function writeImage(imgUrl, pokemonName) {
-	console.log("requesting image of " + pokemonName);
+function writeImage(imgUrl, filepath, attempts) {
+	console.log("REQUESTING IMAGE: " + imgUrl);
 	
 	request(imgUrl)
 		.on('error', function(err) {
-		    console.log("couldn't download " + pokemonName);
+		    
+		    if(attempts <= 3) {
+				console.log("Failed to request " + attempts + " times: " + imgUrl);
+		    	writeImage(imgUrl, filepath, attempts ++);
+		    } else {
+		    	console.log("Failed to request 3 times, not trying again: " + imgUrl );
+		    }
+		    
 		  
 		})
-		.pipe(fs.createWriteStream('./src/assets/images/'+ pokemonName.toLowerCase() + ".jpg"));
+		.pipe(fs.createWriteStream(filepath));
 }
 
 module.exports = {

@@ -1,45 +1,43 @@
 // column and data should be arrays
 // table name is object key (assuming use of for in loops)
-function insert(table, obj){
+function insert(table, id, data, arr = false) {
+	let formattedString
 
-	var query =	'insert into pokemon.' + table + '(' + commaSeparateFields(obj, true) + ') ' +
-				'values (' + commaSeparateFields(obj) + ');'
-
-	return query;
+	if(arr) {
+		formattedString = insertObjectWithArray(table, id, data)
+		
+	} else {
+		formattedString = insertObject(table, id, data);
+		
+	}		
+	return formattedString;
 }
 
 
-function commaSeparateFields(obj, columnHead = false) {
-	let fields = "";
+function insertObjectWithArray(table, id, obj) {	
+	let formattedString = "";
 
-	if(columnHead) { // list the keys
+	for(key in obj) {		
+		for(let i = 0; i < obj[key].length; i ++) {
 
-		for(var key in obj) {
-
-			fields += key + ",";
-		}
-
-	} else { // list the values
-
-		for(var key in obj) {
-			fields += obj[key] + ",";
+			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' +  key + '\', ' +  obj[key] + ');\n';
+			formattedString += row;
 		}
 	}
-
-	return fields.slice(0, -1);
+	return formattedString;
 }
 
-var test = {
-	p: 1,
-	i: 2,
-	a: 3
-};
+function insertObject(table, id, obj) {
+	let formattedString = "";
+	
+	for(key in obj) {
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' +  key + '\', ' +  obj[key] + ');\n';
+		formattedString += row;
+	}
+	return formattedString;
+}
 
-var testHead = commaSeparateFields(test, true);
-var testBody = commaSeparateFields(test);
-console.log(testHead);
-console.log(testBody);
 
 module.exports = {
-	insert: insert
+	generate: insert
 }

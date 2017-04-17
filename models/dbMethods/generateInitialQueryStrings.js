@@ -1,8 +1,10 @@
 const createTables = require ('./createTables.js');
+const mainDict = require('../json/pokemon.json');
 const abilitiesDict = require('../json/abilities.json');
 const movesDict = require('../json/moves.json');
 const typesDict = require('../json/types.json');
 const evolutionsDict = require('../json/evolution.json');
+const insert = require('./insertions');
 
 const fs = require('fs');
 const filepath = '../initPokemonDatabase.txt';
@@ -13,6 +15,39 @@ fs.unlink(filepath, cb => {
 	// create initial tables
 	fs.appendFileSync(filepath, createTables.tables);
 
+
+
+	// for (let i = 0; i < mainDict.length; i++ ) {
+	for (let i = 0; i < 2; i++ ) {
+
+		let mainString = 'INSERT into pokedex.main VALUES (\'' + mainDict[i].unique_id + '\', ' + mainDict[i].id + '\', ' + mainDict[i].name + '\', ' + mainDict[i].form + '\', ' + ');\n';
+		
+		let profileDict = require('../json/' + mainDict[i].unique_id + '.json');
+		// let profile = 'INSERT into pokedex.general VALUES (\'' + mainDict[i].unique_id + '\', ' + profileDict.summary.type + '\', ' + profileDict.summary.species + '\', ' + profileDict.summary.weight + '\', ' + profileDict.summary.height + '\', ' + profileDict.summary.abilities + ');\n';
+		//**type, abilities, missing hidden_ability
+
+		// let baseStats = 'INSERT into pokedex.base_stats VALUES (\'' + mainDict[i].unique_id + '\', ' + profileDict.stats["HP"].base + '\', ' + profileDict.stats["Attack"].base + ', \'' + profileDict.stats["Defence"].base + '\', ' + profileDict.stats["Sp. Atk"].base + ', \'' + profileDict.stats["Sp. Def"].base + ', \'' + profileDict.stats["Speed"].base + ');\n';
+		// let minStats = 'INSERT into pokedex.min_stats VALUES (\'' + mainDict[i].unique_id + '\', ' + profileDict.stats["HP"].min + '\', ' + profileDict.stats["Attack"].min + ', \'' + profileDict.stats["Defence"].min + '\', ' + profileDict.stats["Sp. Atk"].min + ', \'' + profileDict.stats["Sp. Def"].min + ', \'' + profileDict.stats["Speed"].min + ');\n';
+		// let maxStats = 'INSERT into pokedex.max_stats VALUES (\'' + mainDict[i].unique_id + '\', ' + profileDict.stats["HP"].max + '\', ' + profileDict.stats["Attack"].max + ', \'' + profileDict.stats["Defence"].max + '\', ' + profileDict.stats["Sp. Atk"].max + ', \'' + profileDict.stats["Sp. Def"].max + ', \'' + profileDict.stats["Speed"].max + ');\n';
+
+		// let training = 'INSERT into pokedex.max_stats VALUES (\'' + mainDict[i].unique_id + '\', ' + profileDict.training["EV yield"] + '\', ' + profileDict.training["Catch rate"] + ', \'' + profileDict.training["Base Happiness"] + '\', ' + profileDict.training["Base EXP"] + ', \'' + profileDict.training["Growth Rate"] + ', \'' + profileDict.breeding["Egg Groups"] + ');\n';
+		// let description = insert.generate('pokedex.description', mainDict[i].unique_id, mainDict[i]);
+		
+		//moves, location
+
+		// fs.appendFileSync(filepath, mainString);
+		// fs.appendFileSync(filepath, profile);
+		// fs.appendFileSync(filepath, baseStats);
+		// fs.appendFileSync(filepath, minStats);
+		// fs.appendFileSync(filepath, maxStats);
+		// fs.appendFileSync(filepath, training);
+		// fs.appendFileSync(filepath, description);
+
+	}
+
+
+
+
 	// Abilities
 	for (let i = 0; i < abilitiesDict.length; i++) {
 
@@ -21,7 +56,7 @@ fs.unlink(filepath, cb => {
 		fs.appendFileSync(filepath, formattedString);
 	}
 
-
+	
 	// Moves
 	for (let i = 0; i < movesDict.length; i++) {
 

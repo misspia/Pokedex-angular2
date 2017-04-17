@@ -1,9 +1,10 @@
-let writeFile = require('./scraperMethods/helpers/writeFile');
 let pokemonList = require('./scraperMethods/pokemonList');
 let evolutionChart = require('./scraperMethods/evolutionChart');
 let masterTypeChart = require('./scraperMethods/masterTypeChart');
 let masterMoveList = require('./scraperMethods/masterMoveList');
 let masterAbilityList = require('./scraperMethods/masterAbilityList');
+let writeFile = require('./scraperMethods/helpers/writeFile');
+let writeProfiles = require('./scraperMethods/writeProfiles');
 let EventEmitter = require('events');
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
@@ -15,6 +16,7 @@ function main() {
 
 	pokemonList.get(baseUrl, list => {
 		writeFile.json('./json/pokemon.json', list);
+		writeProfiles.profiles();
 	})
 	// evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
 	// 	writeFile.json('./json/evolution.json', evolFamilies);
