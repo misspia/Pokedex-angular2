@@ -78,7 +78,16 @@ const createTables =
 		spedical_defence 	integer,
 		speed 				integer
 	);
-
+	
+	create table pokedex.training(
+		unique_id 		varchar(10),
+		ev_yield 		
+		catch_rate
+		base_happiness
+		base_exp
+		growth_rate
+		egg_groups
+	);
 	create table pokedex.location(
 		
 		unique_id 	varchar(10),
