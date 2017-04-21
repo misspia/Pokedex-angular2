@@ -81,13 +81,19 @@ const createTables =
 	
 	create table pokedex.training(
 		unique_id 		varchar(10),
-		ev_yield 		
-		catch_rate
-		base_happiness
-		base_exp
-		growth_rate
-		egg_groups
+		ev_yield 		varchar(40),		
+		catch_rate 		varchar(40),
+		base_happiness 	varchar(40),
+		base_exp 		varchar(40),
+		growth_rate 	varchar(40),
+		egg_groups 		varchar(40)
 	);
+
+	create table pokedex.types(
+		unique_id 	varchar(10),
+		type 		varchar(20)
+	);
+
 	create table pokedex.location(
 		
 		unique_id 	varchar(10),
@@ -116,7 +122,7 @@ const createTables =
 		probability integer
 	);
 
-	create table pokedex.types(
+	create table pokedex.types_chart(
 		defence 	varchar(20),
 		normal 		integer,
 		fire 		integer,

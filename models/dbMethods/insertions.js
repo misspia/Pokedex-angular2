@@ -1,18 +1,35 @@
 // column and data should be arrays
 // table name is object key (assuming use of for in loops)
 function insert(table, id, data, arr = false) {
-	let formattedString
+	let formattedString;
 
-	if(arr) {
-		formattedString = insertObjectWithArray(table, id, data)
-		
+	if(data instanceof Array) {
+		formattedString = insertArray(table, id, data);
+
+	} else if(typeof data === "object") {
+		if(arr) {
+			formattedString = insertObjectWithArray(table, id, data)
+			
+		} else {
+			formattedString = insertObject(table, id, data);
+			
+		}		
 	} else {
-		formattedString = insertObject(table, id, data);
-		
-	}		
+		console.log('unhandled data type: neither object nor array');
+	}
 	return formattedString;
 }
 
+function insertArray(table, id, arr) {
+	let formattedString = "";
+
+	for(let i = 0; i < arr.length; i ++) {
+		
+		let row = 'INSERT into ' + table + 'VALUES(\'' + id + '\', ' + arr[i] + ');\n';
+		formattedString += row;
+	}
+	return formattedString;
+}
 
 function insertObjectWithArray(table, id, obj) {	
 	let formattedString = "";
