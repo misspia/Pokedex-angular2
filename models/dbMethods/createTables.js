@@ -6,8 +6,7 @@ const createTables =
   		unique_id 	varchar(10),
   		national_id integer,
   		name 		varchar(15),
-  		form 		varchar(15),
-  		type 		varchar[2] 		
+  		form 		varchar(15)		
   	);
 
 	create table pokedex.general(
@@ -15,11 +14,15 @@ const createTables =
 		unique_id 		varchar(10) PRIMARY KEY,
 		species 		varchar(20),
 		weight 			varchar(20),
-		height 			varchar(20),
-		ability 		varchar(30),
-		hidden_ability 	varchar(30)
+		height 			varchar(20)
 	);
 	
+	create table pokedex.abilities(
+		
+		unique_id 	varchar(10),
+		ability 	varchar(30)
+	);
+
 	create table pokedex.description(
 		unique_id 		varchar(10),
 		version 		varchar(50),
@@ -101,7 +104,7 @@ const createTables =
 		location 	varchar(50)
 	);
 
-	create table pokedex.abilities(
+	create table pokedex.abilities_description(
 		
 		name 		varchar(20) PRIMARY KEY,
 		pokemon 	integer,

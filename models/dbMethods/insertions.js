@@ -25,7 +25,7 @@ function insertArray(table, id, arr) {
 
 	for(let i = 0; i < arr.length; i ++) {
 		
-		let row = 'INSERT into ' + table + 'VALUES(\'' + id + '\', ' + arr[i] + ');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', ' + arr[i] + ');\n';
 		formattedString += row;
 	}
 	return formattedString;
@@ -44,17 +44,45 @@ function insertObjectWithArray(table, id, obj) {
 	return formattedString;
 }
 
-function insertObject(table, id, obj) {
+function insertObject(table, id, obj, category = "") {
 	let formattedString = "";
 	
 	for(key in obj) {
-		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' +  key + '\', ' +  obj[key] + ');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' + key + '\', ' +  obj[key] + ');\n';
+		formattedString += row;
+	}
+	return formattedString;
+}
+
+function insertPokemonMoves(table, id, obj) {
+	let formattedString = "";
+
+	for(category in obj) {
+		
+		for(let i = 0; i < obj[category].length; i ++) {
+			
+			formattedString = insertObjectWithCategory(table, id, obj[category][i], category);
+		}
+	}	
+	return formattedString;
+}
+
+function insertObjectWithCategory(table, id, obj, category) {
+	let formattedString = "";
+	
+	for(key in obj) {
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' + category +  '\', ' + key + '\', ' +  obj[key] + ');\n';
 		formattedString += row;
 	}
 	return formattedString;
 }
 
 
+
+
+
+
 module.exports = {
-	generate: insert
+	generate: insert,
+	moves:insertPokemonMoves
 }
