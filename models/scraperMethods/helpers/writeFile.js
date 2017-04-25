@@ -22,8 +22,7 @@ function writeImage(imgUrl, filepath, attempts) {
 		    	writeImage(imgUrl, filepath, attempts ++);
 		    } else {
 		    	console.log("Failed to request 3 times, not trying again: " + imgUrl );
-		    }
-		    
+		    }	    
 		  
 		})
 		.pipe(fs.createWriteStream(filepath));
