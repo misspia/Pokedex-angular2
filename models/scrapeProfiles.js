@@ -13,11 +13,10 @@ const baseUrl = 'http://pokemondb.net';
 
 
 writeProfiles(baseUrl, jsonFilepath, imageFilepath);
-// convertToPNG(jsonFilepath, imageFilepath, './newImages/')
 
 function writeProfiles(baseUrl, jsonFilepath, imageFilepath) {
 
-	fs.readFile(jsonFilepath + 'pokemon.json', 'utf8', function (err, data) {
+	fs.readFile(jsonFilepath + 'pokemon.json', 'utf8', (err, data) => p{
 		if (err) throw err;
 
 		let pkmList = JSON.parse(data);

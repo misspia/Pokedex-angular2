@@ -25,7 +25,7 @@ function insertArray(table, id, arr) {
 
 	for(let i = 0; i < arr.length; i ++) {
 		
-		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', ' + arr[i] + ');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', \'' + arr[i] + '\');\n';
 		formattedString += row;
 	}
 	return formattedString;
@@ -37,7 +37,7 @@ function insertObjectWithArray(table, id, obj) {
 	for(key in obj) {		
 		for(let i = 0; i < obj[key].length; i ++) {
 
-			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' +  key + '\', ' +  obj[key] + ');\n';
+			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' +  key + '\', \'' +  obj[key] + '\');\n';
 			formattedString += row;
 		}
 	}
@@ -48,7 +48,7 @@ function insertObject(table, id, obj, category = "") {
 	let formattedString = "";
 	
 	for(key in obj) {
-		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' + key + '\', ' +  obj[key] + ');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' + key + '\', \'' +  obj[key] + '\');\n';
 		formattedString += row;
 	}
 	return formattedString;
@@ -71,16 +71,11 @@ function insertObjectWithCategory(table, id, obj, category) {
 	let formattedString = "";
 	
 	for(key in obj) {
-		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', ' + category +  '\', ' + key + '\', ' +  obj[key] + ');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' + category +  '\', \'' + key + '\', \'' +  obj[key] + '\');\n';
 		formattedString += row;
 	}
 	return formattedString;
 }
-
-
-
-
-
 
 module.exports = {
 	generate: insert,

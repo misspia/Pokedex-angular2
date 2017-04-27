@@ -139,7 +139,7 @@ const createTables =
 		flying 		integer,
 		psychic		integer,
 		bug 		integer,
-		rock 		integer
+		rock 		integer,
 		ghost 		integer,
 		dragon 		integer,
 		dark 		integer,
