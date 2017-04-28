@@ -19,7 +19,7 @@ function insert(table, id, data, arr = false) {
 }
 
 function removeSpecialCharacters(str) {
-	return str.replace(/'s/g, "\\'s");
+	return str.replace(/'s/g, "’s");
 }
 
 function insertArray(table, id, arr) {
