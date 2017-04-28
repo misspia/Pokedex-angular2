@@ -1,5 +1,3 @@
-// column and data should be arrays
-// table name is object key (assuming use of for in loops)
 function insert(table, id, data, arr = false) {
 	let formattedString;
 
@@ -15,14 +13,17 @@ function insert(table, id, data, arr = false) {
 			
 		}		
 	} else {
-		console.log('unhandled data type: neither object nor array');
+		console.log('unhandled data type');
 	}
 	return formattedString;
 }
 
+function removeSpecialCharacters(str) {
+	return str.replace(/'s/g, "\\'s");
+}
+
 function insertArray(table, id, arr) {
 	let formattedString = "";
-
 	for(let i = 0; i < arr.length; i ++) {
 		
 		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', \'' + arr[i] + '\');\n';
@@ -35,9 +36,10 @@ function insertObjectWithArray(table, id, obj) {
 	let formattedString = "";
 
 	for(key in obj) {		
-		for(let i = 0; i < obj[key].length; i ++) {
+		let newArr = obj[key][0].split(", ");
 
-			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' +  key + '\', \'' +  obj[key] + '\');\n';
+		for(let i = 0; i < newArr.length; i ++) {
+			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' +  key + '\', \'' +  newArr[i] + '\');\n';
 			formattedString += row;
 		}
 	}
@@ -61,7 +63,7 @@ function insertPokemonMoves(table, id, obj) {
 		
 		for(let i = 0; i < obj[category].length; i ++) {
 			
-			formattedString = insertObjectWithCategory(table, id, obj[category][i], category);
+			formattedString += insertObjectWithCategory(table, id, obj[category][i], category);
 		}
 	}	
 	return formattedString;
@@ -71,13 +73,36 @@ function insertObjectWithCategory(table, id, obj, category) {
 	let formattedString = "";
 	
 	for(key in obj) {
-		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' + category +  '\', \'' + key + '\', \'' +  obj[key] + '\');\n';
+		let row = 'INSERT into ' + table + ' (unique_id, method, ' +  combineObjectKeysValues(obj) + ')' +
+		' VALUES(\'' +  id + '\', \'' + category + '\', ' +  combineObjectKeysValues(obj, false) + ');\n';
 		formattedString += row;
 	}
 	return formattedString;
 }
 
+function combineObjectKeysValues(obj, combineKey = true) {
+
+	let arr = [];
+
+	for(key in obj) {
+		if(combineKey) {
+			arr.push(key.toLowerCase());
+		} else {
+			if(obj[key] == '∞') {
+				arr.push('\'infinity\'');
+			} else {
+				arr.push('\'' + obj[key] + '\'');
+			}		
+		}	
+	}
+	return arr.join(", ");
+}
+
 module.exports = {
 	generate: insert,
-	moves:insertPokemonMoves
+	moves:insertPokemonMoves,
+	normalizeString: removeSpecialCharacters
 }
+
+
+
