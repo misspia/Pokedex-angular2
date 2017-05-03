@@ -1,3 +1,7 @@
+// remove schema: drop schema DBNAME cascade
+// create db: create database DBNAME
+// see list of all db: \l
+
 const createTables = require ('./createTables.js');
 const mainDict = require('../json/pokemon.json');
 const abilitiesDict = require('../json/abilities.json');

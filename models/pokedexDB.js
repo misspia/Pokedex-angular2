@@ -1,48 +1,77 @@
 // http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WM3SshLyvfY?
-
-// https://docs.google.com/spreadsheets/d/1GZ56WFZEpXGlT4P5FUwOJCzNqVFfju9oFL9SP-kBwU8/edit#gid=549519719
 // https://github.com/brianc/node-postgres/wiki/Client
 
-// remove schema: drop schema DBNAME cascade
-// create db: create database DBNAME
-// see list of all db: \l
+// https://gigadom.wordpress.com/2014/07/20/working-with-node-js-and-postgresql/
+// http://stackoverflow.com/questions/9205496/how-to-make-connection-to-postgres-via-node-js
+// http://stackoverflow.com/questions/17441495/returning-result-from-select-with-node-postgres
 
-const fs = require('fs');
+const express = require('express');
+
+const app = express();
+const port = 3001;
+
 const pg = require('pg');
-
+const path = require('path');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
+
 const client = new pg.Client(connectionString);
 client.connect();
 
-fs.readFile('./initPokemonDatabase.txt', 'utf8', (err, data) => {
-	if(err) throw err;
+const queryStrings = {
+	main: "SELECT * FROM pokedex.main;", 
+	general: "SELECT * FROM pokedex.general;",
+	moves: "SELECT * FROM pokedex.moves;",
+	evolutions: "SELECT * FROM pokedex.evolutions", //returns empty array
+	baseStats:"SELECT * FROM pokedex.base_stats",
+	minStats:"SELECT * FROM pokedex.min_stats",
+	maxStats:"SELECT * FROM pokedex.max_stats",
+	training: "SELECT * FROM pokedex.training",
+	types: "SELECT * FROM pokedex.types",
+	location: "SELECT * FROM pokedex.location",
+	abilitiesDescription: "SELECT * FROM pokedex.abilities_description", //returns empty array
+	movesDescription: "SELECT * FROM pokedex.moves_description", //returns empty array
+	typesChart: "SELECT * FROM pokedex.types_chart" //returns empty array
+};
 
-	const query = client.query(data);	
-	query.on('end', () => { client.end(); });
+function jsonifyDBQuery(queryString) {
+	let rows = [];
+	let query = client.query(queryString);	
+	
+	query.on("row", function (row, result) {
+	    result.addRow(row);
+	});
+
+	return new Promise( (resolve, reject) => {
+
+		query.on("end", function (result) {
+			resolve(JSON.stringify(result.rows));
+		    client.end();
+		});	
+	})
+
+}
+
+// let test = jsonifyDBQuery(queryStrings.typesChart).then( (data) => {
+// 	console.log(data);
+// })
+
+//ISSUES: 
+// - each table quey only goes up to 172 
+// - socket connection is brokern when more than 1 request is made
+// dont forget to install postgres on computer + run the initial set up queries
+app.get('/api/pokedex/master-list', (req, res) => {
+	jsonifyDBQuery(queryStrings.main).then( (data) => {
+		res.send(data);
+	});
 })
 
+app.get('/api/pokedex/general', (req, res) => {
+	jsonifyDBQuery(queryStrings.general).then( (data) => {
+		res.send(data);
+	});
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(port, () => {
+	console.log('Listening on port ' + port);
+});
 
