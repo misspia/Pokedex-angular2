@@ -56,20 +56,72 @@ function jsonifyDBQuery(queryString) {
 // })
 
 //ISSUES: 
-// - each table quey only goes up to 172 
+// - each table quey only goes up to 172 ** UPDATE: queries arent working properly, wrong # of rows
 // - socket connection is brokern when more than 1 request is made
 // dont forget to install postgres on computer + run the initial set up queries
+
 app.get('/api/pokedex/master-list', (req, res) => {
 	jsonifyDBQuery(queryStrings.main).then( (data) => {
 		res.send(data);
 	});
-})
+});
 
 app.get('/api/pokedex/general', (req, res) => {
 	jsonifyDBQuery(queryStrings.general).then( (data) => {
 		res.send(data);
 	});
-})
+});
+
+app.get('/api/pokedex/moves', (req, res) => {
+	jsonifyDBQuery(queryStrings.moves).then( (data) => {
+		res.send(data);
+	});
+});
+
+//evolutions go here
+
+app.get('/api/pokedex/base_stats', (req, res) => {
+	jsonifyDBQuery(queryStrings.baseStats).then( (data) => {
+		res.send(data);
+	});
+});
+
+app.get('/api/pokedex/min_stats', (req, res) => {
+	jsonifyDBQuery(queryStrings.minStats).then( (data) => {
+		res.send(data);
+	});
+});
+
+app.get('/api/pokedex/max_stats', (req, res) => {
+	jsonifyDBQuery(queryStrings.maxStats).then( (data) => {
+		res.send(data);
+	});
+});
+
+app.get('/api/pokedex/training', (req, res) => {
+	jsonifyDBQuery(queryStrings.training).then( (data) => {
+		res.send(data);
+	});
+});
+
+app.get('/api/pokedex/types', (req, res) => {
+	jsonifyDBQuery(queryStrings.types).then( (data) => {
+		res.send(data);
+	});
+});
+
+
+app.get('/api/pokedex/location', (req, res) => {
+	jsonifyDBQuery(queryStrings.location).then( (data) => {
+		res.send(data);
+	});
+});
+
+// abilities description goes here
+
+// moves description goes here
+
+// types chart goes here
 
 app.listen(port, () => {
 	console.log('Listening on port ' + port);
