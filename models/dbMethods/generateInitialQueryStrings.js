@@ -13,7 +13,6 @@ const insert = require('./insertions');
 const fs = require('fs');
 const filepath = './initPokemonDatabase.txt';
 
-
 fs.unlink(filepath, cb => {
 
 	// create initial tables
@@ -21,7 +20,7 @@ fs.unlink(filepath, cb => {
 
 	for (let i = 0; i < mainDict.length; i++ ) {
 
-		let mainString = 'INSERT into pokedex.main VALUES (\'' + mainDict[i].unique_id + '\', \'' + mainDict[i].id + '\', \'' + mainDict[i].name + '\',\'' + mainDict[i].form + '\');\n';
+		let mainString = 'INSERT into pokedex.main VALUES (\'' + mainDict[i].unique_id + '\', \'' + mainDict[i].id + '\', \'' + insert.normalizeString(mainDict[i].name) + '\',\'' + insert.normalizeString(mainDict[i].form) + '\');\n';
 		
 		let profileDict = require('../json/' + mainDict[i].unique_id + '.json');
 
@@ -63,7 +62,7 @@ fs.unlink(filepath, cb => {
 	for (let i = 0; i < movesDict.length; i++) {
 		let tm = movesDict[i].TM == "" ? "-" : movesDict[i].TM;
 
-		let formattedString = 'INSERT into pokedex.moves_description VALUES (\'' + movesDict[i].Name + '\', \'' + movesDict[i].Type + '\', \'' + movesDict[i].Category + '\', \'' + movesDict[i].Power + '\', \'' +
+		let formattedString = 'INSERT into pokedex.moves_description VALUES (\'' + insert.normalizeString(movesDict[i].Name) + '\', \'' + movesDict[i].Type + '\', \'' + movesDict[i].Category + '\', \'' + movesDict[i].Power + '\', \'' +
 			movesDict[i].Accuracy + '\', \''  + movesDict[i].PP + '\', \'' + tm + '\', \'' + insert.normalizeString(movesDict[i].Effect) + '\', \'' + movesDict[i].Probability + '\');\n';
 
 		fs.appendFileSync(filepath, formattedString);

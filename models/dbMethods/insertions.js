@@ -19,14 +19,22 @@ function insert(table, id, data, arr = false) {
 }
 
 function removeSpecialCharacters(str) {
-	return str.replace(/'s/g, "’s");
+	str = str.replace(/'s/g, "’s");
+	str = str.replace(/'t/g, "’t");
+	str = str.replace(/'o/g, "’o");
+	str = str.replace(/'d/g, "’d");
+	str = str.replace(/'D/g, "’D");
+	str = str.replace(/'u/g, "’u");
+	str = str.replace(/'e/g, "’e");
+	str = str.replace(/s'/g, "s’");
+	return str
 }
 
 function insertArray(table, id, arr) {
 	let formattedString = "";
 	for(let i = 0; i < arr.length; i ++) {
 		
-		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', \'' + arr[i] + '\');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' + id + '\', \'' + removeSpecialCharacters(arr[i]) + '\');\n';
 		formattedString += row;
 	}
 	return formattedString;
@@ -39,7 +47,7 @@ function insertObjectWithArray(table, id, obj) {
 		let newArr = obj[key][0].split(", ");
 
 		for(let i = 0; i < newArr.length; i ++) {
-			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' +  key + '\', \'' +  newArr[i] + '\');\n';
+			let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' +  key + '\', \'' +  removeSpecialCharacters(newArr[i]) + '\');\n';
 			formattedString += row;
 		}
 	}
@@ -50,7 +58,7 @@ function insertObject(table, id, obj, category = "") {
 	let formattedString = "";
 	
 	for(key in obj) {
-		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' + key + '\', \'' +  obj[key] + '\');\n';
+		let row = 'INSERT into ' + table + ' VALUES(\'' +  id + '\', \'' + key + '\', \'' +  removeSpecialCharacters(obj[key]) + '\');\n';
 		formattedString += row;
 	}
 	return formattedString;
