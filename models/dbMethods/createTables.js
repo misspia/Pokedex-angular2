@@ -3,56 +3,56 @@ const createTables =
   	create schema pokedex;
   	create table pokedex.main(
 
-  		unique_id  	varchar(10) PRIMARY KEY,
+  		unique_id  	text PRIMARY KEY,
   		national_id  integer,
-  		name 	 	varchar(15),
-  		form 	 	varchar(15)		
+  		name 	 	text,
+  		form 	 	text		
   	);
 
 	create table pokedex.general(
 		
-		unique_id  		varchar(10),
-		species  		varchar(20),
-		weight 	 		varchar(20),
-		height 	 		varchar(20)
+		unique_id  		text,
+		species  		text,
+		weight 	 		text,
+		height 	 		text
 	);
 	
 	create table pokedex.abilities(
 		
-		unique_id  	varchar(10),
-		ability  	varchar(30)
+		unique_id  	text,
+		ability  	text
 	);
 
 	create table pokedex.description(
-		unique_id  		varchar(10),
-		version  		varchar(50),
-		description  	varchar(300)
+		unique_id  		text,
+		version  		text,
+		description  	text
 	);
 
 	create table pokedex.moves(
 		
-		unique_id 	  	varchar(10),
-		method 		  	varchar(20),
-		level 		  	varchar(3),
-		name 		  	varchar(30),		
-		type 		  	varchar(15),
-		category 		varchar(15),
-		power 		  	varchar(15),
-		accuracy 	 	varchar(15)
+		unique_id 	  	text,
+		method 		  	text,
+		level 		  	text,
+		name 		  	text,		
+		type 		  	text,
+		category 		text,
+		power 		  	text,
+		accuracy 	 	text
 	);	
 
 	create table pokedex.evolutions(
 		
-		base  	varchar(10),
-		stage0  	varchar(10),
-		stage1  	varchar(10),
-		stage2  	varchar(10),
-		condition 	varchar(30)
+		base  	text,
+		stage0  	text,
+		stage1  	text,
+		stage2  	text,
+		condition 	text
 	);
 
 	create table pokedex.base_stats(
 		
-		unique_id  			varchar(10),
+		unique_id  			text,
 		hp 		 			integer,
 		attack 	 			integer,
 		defence  			integer,
@@ -63,7 +63,7 @@ const createTables =
 
 	create table pokedex.min_stats(
 		
-		unique_id 		 	varchar(10),
+		unique_id 		 	text,
 		hp 				 	integer,
 		attack 			 	integer,
 		defence 		 	integer,
@@ -74,7 +74,7 @@ const createTables =
 
 	create table pokedex.max_stats(
 		
-		unique_id 		 	varchar(10),
+		unique_id 		 	text,
 		hp 				 	integer,
 		attack 			 	integer,
 		defence 		 	integer,
@@ -84,50 +84,50 @@ const createTables =
 	);
 	
 	create table pokedex.training(
-		unique_id  		varchar(10),
-		ev_yield 	 	varchar(40),		
-		catch_rate 	 	varchar(40),
-		base_happiness  	varchar(40),
-		base_exp 		 varchar(40),
-		growth_rate  	varchar(40),
-		egg_groups 	 	varchar(40)
+		unique_id  		text,
+		ev_yield 	 	text,		
+		catch_rate 	 	text,
+		base_happiness  	text,
+		base_exp 		 text,
+		growth_rate  	text,
+		egg_groups 	 	text
 	);
 
 	create table pokedex.types(
-		unique_id  	varchar(10),
-		type 	 	varchar(20)
+		unique_id  	text,
+		type 	 	text
 	);
 
 	create table pokedex.location(
 		
-		unique_id  	varchar(10),
-		version  	varchar(50),
-		location  	varchar(50)
+		unique_id  	text,
+		version  	text,
+		location  	text
 	);
 
 	create table pokedex.abilities_description(
 		
-		name 	 	varchar(20),
+		name 	 	text,
 		pokemon  	integer,
-		description  varchar(500),
+		description  text,
 		generation   integer
 	);
 
 	create table pokedex.moves_description(
 		
-		name  	 		varchar(30),
-		type  	 		varchar(10),
-		category 	 	varchar(10),
-		power 	  	 	varchar(10),
-		accuracy      	varchar(10),
-		pp            	varchar(10),
-		tm            	varchar(6),
-		effect        	varchar(500),
-		probability   	varchar(10)
+		name  	 		text,
+		type  	 		text,
+		category 	 	text,
+		power 	  	 	text,
+		accuracy      	text,
+		pp            	text,
+		tm            	text,
+		effect        	text,
+		probability   	text
 	);
 
 	create table pokedex.types_chart(
-		defence  	varchar(40),
+		defence  	text,
 		normal 	 	integer,
 		fire 	 	integer,
 		water 	 	integer,
