@@ -27,7 +27,7 @@ function removeSpecialCharacters(str) {
 	str = str.replace(/'u/g, "’u");
 	str = str.replace(/'e/g, "’e");
 	str = str.replace(/s'/g, "s’");
-	return str
+	return str;
 }
 
 function insertArray(table, id, arr) {
@@ -93,17 +93,21 @@ function combineObjectKeysValues(obj, combineKey = true) {
 
 	let arr = [];
 
-	for(key in obj) {
+	for(let key in obj) {
+		
+
 		if(combineKey) {
-			arr.push(key.toLowerCase());
+			arr.push(removeSpecialCharacters(key.toLowerCase()));
 		} else {
 			if(obj[key] == '∞') {
 				arr.push('\'infinity\'');
 			} else {
-				arr.push('\'' + obj[key] + '\'');
+				arr.push('\'' + removeSpecialCharacters(obj[key]) + '\'');
 			}		
 		}	
 	}
+	console.log(key);
+	console.log(arr.join(", "));
 	return arr.join(", ");
 }
 
