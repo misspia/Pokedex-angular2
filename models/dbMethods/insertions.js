@@ -67,11 +67,12 @@ function insertObject(table, id, obj, category = "") {
 function insertPokemonMoves(table, id, obj) {
 	let formattedString = "";
 
-	for(category in obj) {
-		
+	for(let category in obj) {
 		for(let i = 0; i < obj[category].length; i ++) {
-			
-			formattedString += insertObjectWithCategory(table, id, obj[category][i], category);
+
+			let moveObj = obj[category][i];
+			formattedString += 'INSERT into ' + table + ' (unique_id, method, ' +  combineObjectKeysValues(moveObj) + ')' +
+			' VALUES(\'' +  id + '\', \'' + category + '\', ' +  combineObjectKeysValues(moveObj, false) + ');\n';
 		}
 	}	
 	return formattedString;
@@ -79,7 +80,7 @@ function insertPokemonMoves(table, id, obj) {
 
 function insertObjectWithCategory(table, id, obj, category) {
 	let formattedString = "";
-	
+
 	for(key in obj) {
 		let row = 'INSERT into ' + table + ' (unique_id, method, ' +  combineObjectKeysValues(obj) + ')' +
 		' VALUES(\'' +  id + '\', \'' + category + '\', ' +  combineObjectKeysValues(obj, false) + ');\n';
