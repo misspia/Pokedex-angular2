@@ -106,8 +106,8 @@ function combineObjectKeysValues(obj, combineKey = true) {
 			}		
 		}	
 	}
-	console.log(key);
-	console.log(arr.join(", "));
+	// console.log(key);
+	// console.log(arr.join(", "));
 	return arr.join(", ");
 }
 
