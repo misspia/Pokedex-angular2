@@ -6,16 +6,12 @@
 // http://stackoverflow.com/questions/17441495/returning-result-from-select-with-node-postgres
 
 const express = require('express');
-
 const app = express();
 const port = 3001;
 
 const pg = require('pg');
 const path = require('path');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
-
-const client = new pg.Client(connectionString);
-client.connect();
 
 const tables = {
 	pokemon: [
@@ -45,6 +41,9 @@ function generateQueryString(tables, field, target) {
 }
 
 function jsonifyDBQuery(queryString) {
+	
+	const client = new pg.Client(connectionString);
+	client.connect();
 	let rows = [];
 	let query = client.query(queryString);	
 	
@@ -64,7 +63,7 @@ function jsonifyDBQuery(queryString) {
 // http://localhost:3001/api/pokemon/unique_id/n1
 // http://localhost:3001/api/evolutions/*
 
-app.get('/api/:category/:field/:target?', (req, res) => {
+app.get('/api/category=:category&field=:field&target=:target?', (req, res) => {
 	let queryString = "";
 
 	if(req.params.target) {
