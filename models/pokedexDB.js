@@ -1,10 +1,6 @@
 // http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WM3SshLyvfY?
 // https://github.com/brianc/node-postgres/wiki/Client
 
-// https://gigadom.wordpress.com/2014/07/20/working-with-node-js-and-postgresql/
-// http://stackoverflow.com/questions/9205496/how-to-make-connection-to-postgres-via-node-js
-// http://stackoverflow.com/questions/17441495/returning-result-from-select-with-node-postgres
-
 const express = require('express');
 const app = express();
 const port = 3001;
@@ -13,42 +9,62 @@ const pg = require('pg');
 const path = require('path');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
 
-const tables = {
-	pokemon: [
-		"pokedex.main", " pokedex.general", "pokedex.moves", 
-		"pokedex.base_stats", "pokedex.min_stats", "pokedex.max_stats",
-		"pokedex.training", "pokedex.types", "pokedex.location"
-	],
-	abilities: ["pokedex.abilities_description"],
-	moves: ["pokedex.moves_description"],
-	types: ["pokedex.types_chart"],
-	evolutions: ["pokedex.evolutions"]
+const schema = {
+	main: 'pokedex.main',
+	general: 'pokedex.general',
+	moves: 'pokedex.moves',
+	base_stats: 'pokedex.base_stats',
+	min_stats: 'pokedex.min_stats',
+	max_stats: 'pokedex.max_stats',
+	training: 'pokedex.training',
+	types: 'pokedex.types',
+	location: 'pokedex.location',
+	abilities_description: 'pokedex.abilities_description',
+	moves_description: 'pokedex.moves_description',
+	types_chart: 'pokedex.types_chart',
+	evolutions: 'pokedex.evolutions'
 };
 
-function generateQueryString(tables, field, target) {
+function generateQueryString(tableNames, field, target) {
 	let queryString = "";
-	
+	let tables = tableNames.includes(",") ? tableNames.split(",") : [tableNames];
+
 	if(field == '*') {
 		for(let i = 0; i < tables.length; i ++) {
-			queryString += "SELECT * FROM " + tables[i] + ";\n";
+			queryString += "SELECT * FROM " + schema[tables[i]] + ";\n";
 		} 	
 	} else {
 		for(let i = 0; i < tables.length; i ++) {
-			queryString += "SELECT * FROM " + tables[i] + " WHERE " + field + "='" + target + "';\n";
+			queryString += "SELECT * FROM " + schema[tables[i]] + " WHERE " + field + "='" + target + "';\n";
 		};
 	}	
 	return queryString;
+}
+
+function generateConditionString(fields, targets) {
+	let condition = " WHERE ";
+	let fieldsArr = fields.split(",");
+	let targetsArr = targets.split(",");
+
+	for(let i = 0; i < fieldsArr.length; i ++) {
+		if(i == fieldsArr.length - 1) {
+			condition += fieldsArr[i] + "='" + targetsArr[i] + "';\n";
+		} else {
+			condition += fieldsArr[i] + "='" + targetsArr[i] + "' AND\n";
+		}	
+	}
+	return condition;
 }
 
 function jsonifyDBQuery(queryString) {
 	
 	const client = new pg.Client(connectionString);
 	client.connect();
-	let rows = [];
 	let query = client.query(queryString);	
 	
 	query.on("row", function (row, result) {
 	    result.addRow(row);
+	    // console.log(row);
 	});
 
 	return new Promise( (resolve, reject) => {
@@ -59,17 +75,20 @@ function jsonifyDBQuery(queryString) {
 	})
 };
 
+jsonifyDBQuery(generateQueryString('types_chart', '*'))
+
 //EXAMPLES:
-// http://localhost:3001/api/pokemon/unique_id/n1
-// http://localhost:3001/api/evolutions/*
+// http://localhost:3001/api/category=main,location&field=unique_id&target=n1
+// http://localhost:3001/api/category=evolutions&field=*&target=false
 
 app.get('/api/category=:category&field=:field&target=:target?', (req, res) => {
 	let queryString = "";
+	let tables = req.params.category;
 
 	if(req.params.target) {
-		queryString = generateQueryString(tables[req.params.category], req.params.field, req.params.target);
+		queryString = generateQueryString(tables, req.params.field, req.params.target);
 	} else {
-		queryString = generateQueryString(tables[req.params.category], req.params.field);
+		queryString = generateQueryString(tables, req.params.field);
 	}
 	jsonifyDBQuery(queryString).then( (data) => {
 		res.send(data);
