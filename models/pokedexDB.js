@@ -25,7 +25,8 @@ const tables = {
 	],
 	abilities: ["pokedex.abilities_description"],
 	moves: ["pokedex.moves_description"],
-	types: ["pokedex.types_chart"]
+	types: ["pokedex.types_chart"],
+	evolutions: ["pokedex.evolutions"]
 };
 
 function generateQueryString(tables, field, target) {
@@ -52,7 +53,6 @@ function jsonifyDBQuery(queryString) {
 	});
 
 	return new Promise( (resolve, reject) => {
-
 		query.on("end", function (result) {
 			resolve(JSON.stringify(result.rows));
 		    client.end();
@@ -60,44 +60,21 @@ function jsonifyDBQuery(queryString) {
 	})
 };
 
-// let test = generateQueryString(tables.pokemon, 'unique_id', 'n1');
-// console.log(test);
+//EXAMPLES:
+// http://localhost:3001/api/pokemon/unique_id/n1
+// http://localhost:3001/api/evolutions/*
 
-// let result = jsonifyDBQuery(test).then( (data) => {
-// 	console.log(data);
-// });
+app.get('/api/:category/:field/:target?', (req, res) => {
+	let queryString = "";
 
-
-app.get('/api/pokedex/n1', (req, res) => {
-	let queryString = generateQueryString(tables.pokemon, 'unique_id', 'n1');
-
+	if(req.params.target) {
+		queryString = generateQueryString(tables[req.params.category], req.params.field, req.params.target);
+	} else {
+		queryString = generateQueryString(tables[req.params.category], req.params.field);
+	}
 	jsonifyDBQuery(queryString).then( (data) => {
 		res.send(data);
 	});
-});
-
-app.get('/api/types_chart', (req, res) => {
-	let queryString = generateQueryString(tables.types, '*');
-
-	jsonifyDBQuery(queryString).then( (data) => {
-		res.send(data);
-	})
-});
-
-app.get('/api/moves_description', (req, res) => {
-	let queryString = generateQueryString(tables.moves, '*');
-
-	jsonifyDBQuery(queryString).then( (data) => {
-		res.send(data);
-	})
-});
-
-app.get('/api/abilities_description', (req, res) => {
-	let queryString = generateQueryString(tables.abilities, '*');
-
-	jsonifyDBQuery(queryString).then( (data) => {
-		res.send(data);
-	})
 });
 
 app.listen(port, () => {
