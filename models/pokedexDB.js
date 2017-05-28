@@ -64,18 +64,23 @@ function jsonifyDBQuery(queryString) {
 	
 	query.on("row", function (row, result) {
 	    result.addRow(row);
+	    // result["test"] = row;
+	    console.log(result.test);
+
 	    // console.log(row);
 	});
 
 	return new Promise( (resolve, reject) => {
 		query.on("end", function (result) {
 			resolve(JSON.stringify(result.rows));
+			// resolve(JSON.stringify(result.test));
 		    client.end();
 		});	
 	})
 };
 
-jsonifyDBQuery(generateQueryString('types_chart', '*'))
+// jsonifyDBQuery(generateQueryString('types_chart', '*'))
+// jsonifyDBQuery(generateQueryString('main,location', 'unique_id', 'n1'))
 
 //EXAMPLES:
 // http://localhost:3001/api/category=main,location&field=unique_id&target=n1
