@@ -4,7 +4,7 @@ import { MainListService } from './main-list.service';
 @Component({
 	selector: 'app-main-list',
 	templateUrl: './main-list.component.html',
-	styleUrls: ['./main-list.component.css'],
+	styleUrls: ['./main-list.component.scss', './pkmn-icons.css'],
 	providers: [MainListService]
 })
 export class MainListComponent implements OnInit {

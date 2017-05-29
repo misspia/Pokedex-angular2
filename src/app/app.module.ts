@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MainListComponent } from './main-list/main-list.component';
+import { LeadingZeroPipe } from './filters/leading-zero.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainListComponent
+    MainListComponent,
+    LeadingZeroPipe
   ],
   imports: [
     BrowserModule,

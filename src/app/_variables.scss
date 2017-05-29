@@ -1,0 +1,17 @@
+$background: #10161d;
+$primaryDark: #3b7a86;
+$primaryLight: #52aebd;
+$secondaryDark: #427f78;
+$secondaryLight: #04fbec;
+$accentDark: #be4a2a;
+$accentLight: #d2833c;
+
+@mixin square($size) {
+	width: $size;
+	height: $size;
+}
+
+@mixin background_opacity($color, $opacity) {
+	background-color: $color;
+	background-color: rgba($color, $opacity);
+}
