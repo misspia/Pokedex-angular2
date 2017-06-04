@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MainListComponent } from './main-list/main-list.component';
 import { LeadingZeroPipe } from './filters/leading-zero.pipe';
+import { PreviewCardComponent } from './preview-card/preview-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainListComponent,
-    LeadingZeroPipe
+    LeadingZeroPipe,
+    PreviewCardComponent
   ],
   imports: [
     BrowserModule,
