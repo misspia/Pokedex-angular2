@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { MainListComponent } from './main-list/main-list.component';
-// import { PreviewCardComponent } from './preview-card/preview-card.component';
+import { QuickviewComponent } from './quickview/quickview.component';
 
 @Component({
   selector: 'app-root', //html tag name
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  entryComponents: [MainListComponent] //http://stackoverflow.com/a/39688549
+  entryComponents: [MainListComponent, QuickviewComponent] //http://stackoverflow.com/a/39688549
 })
 export class AppComponent {
-	pkId: String<pkId>; 
+	pkId: String; 
 	title = 'le pokedex';
 
 	constructor() {
-		this.pkId = "n1";
+		this.pkId = "n151";
 	}
 }
 

@@ -13,8 +13,7 @@ export class MainListComponent implements OnInit {
 	mainList;
 	constructor(mainListService: MainListService) { 
 		mainListService.getList().subscribe( (data)=>{
-			console.log("DATA");
-			console.log(data);
+			// console.log(data);
 			this.mainList = data;
 		})
 	}

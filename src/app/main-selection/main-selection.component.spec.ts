@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PreviewCardComponent } from './preview-card.component';
+import { MainSelectionComponent } from './main-selection.component';
 
-describe('PreviewCardComponent', () => {
-  let component: PreviewCardComponent;
-  let fixture: ComponentFixture<PreviewCardComponent>;
+describe('MainSelectionComponent', () => {
+  let component: MainSelectionComponent;
+  let fixture: ComponentFixture<MainSelectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreviewCardComponent ]
+      declarations: [ MainSelectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewCardComponent);
+    fixture = TestBed.createComponent(MainSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
