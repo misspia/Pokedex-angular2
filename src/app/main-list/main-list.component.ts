@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MainListService } from './main-list.service'; 
+import { QuickviewComponent } from '../quickview/quickview.component'
 
 @Component({
 	selector: 'app-main-list',
 	templateUrl: './main-list.component.html',
 	styleUrls: ['./main-list.component.scss', './pkmn-icons.css'],
-	providers: [MainListService]
+	providers: [MainListService],
+	entryComponents: [QuickviewComponent]
 })
 export class MainListComponent implements OnInit {
 	mainList;
