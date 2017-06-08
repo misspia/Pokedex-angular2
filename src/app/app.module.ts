@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MainListComponent } from './main-list/main-list.component';
 import { LeadingZeroPipe } from './filters/leading-zero.pipe';
-import { PreviewCardComponent } from './preview-card/preview-card.component';
 import { QuickviewComponent } from './quickview/quickview.component';
 import { MainSelectionComponent } from './main-selection/main-selection.component';
 
@@ -15,7 +14,6 @@ import { MainSelectionComponent } from './main-selection/main-selection.componen
     AppComponent,
     MainListComponent,
     LeadingZeroPipe,
-    PreviewCardComponent,
     QuickviewComponent,
     MainSelectionComponent
   ],

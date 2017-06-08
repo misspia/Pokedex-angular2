@@ -13,9 +13,9 @@ export class QuickviewComponent implements OnInit {
 
 	constructor(quickviewService: QuickviewService) {
 		console.log(this.pkId)
-		// quickviewService.getSummary(this.pkId).subscribe( (data) => {
-		// 	console.log(data)
-		// })
+		quickviewService.getSummary("n1").subscribe( (data) => {
+			console.log(data)
+		})
 	}
 	ngOnInit() {
 		console.log(this.pkId);

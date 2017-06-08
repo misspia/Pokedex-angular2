@@ -10,7 +10,7 @@ export class QuickviewService {
 		
 	}
 	getSummary(id): any {
-		return this.http.get("./src/app/main-list/" + id + ".json")
+		return this.http.get("./src/assets/json/" + id + ".json")
 		.map((res:Response) => res.json());
 	}
 }
