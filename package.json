@@ -6,8 +6,14 @@
     "react-scripts": "1.0.10"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "events": "^1.1.1",
+    "express": "^4.15.3",
+    "file-system": "^2.2.2",
+    "pg": "^6.4.0",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "request": "^2.81.0"
   },
   "scripts": {
     "start": "react-scripts start",
