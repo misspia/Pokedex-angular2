@@ -1,10 +1,8 @@
 import { createStore } from 'redux';
-import reducers from '.pokedex.reducers.js';
+import reducers from './pokedex.reducers.js';
 
-const initialState = {
+// const initialState = { };
 
-};
-
-const store = createStore(reducers, initialState);
-
-module.exports = store;
+export default function configureStore(initialState) {
+  return createStore(reducers, initialState);
+}

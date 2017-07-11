@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
 
-import Store from './pokedex.store.js';
-
+import List from './List/List.smart.jsx';
 import './index.css';
 
-import { connect } from 'react-redux';
-import Actions from './pokedex.actions.js';
+import configureStore from './pokedex.store.js';
+const store = configureStore();
+
+
 
 // #7
 // https://scotch.io/tutorials/build-a-bookshop-with-react-redux-i-react-redux-flow
@@ -23,6 +24,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <List/>
       </div>
     );
   }
@@ -31,6 +33,6 @@ class App extends Component {
 
 
 ReactDOM.render(
-	<Provider store={Store}><App /></Provider>,
+	<Provider store={store}><App /></Provider>,
 	 document.getElementById('root'));
 registerServiceWorker();

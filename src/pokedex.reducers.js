@@ -1,4 +1,4 @@
-const Reducer = (state={
+export default (state={
 	current: {},
 	pokemon: [],
 	evolutions: [],
@@ -6,20 +6,21 @@ const Reducer = (state={
 }, action) => {
 	switch(action.type) {
 		case 'GET_ALL_POKEMON':
+			console.log('reached reducer!')
 			return { ...state, pokemon: action.data };
-			break;
+			// break;
 
-		case: 'GET_ALL_EVOLUTIONS':
+		case 'GET_ALL_EVOLUTIONS':
 			return { ...state, evolutions: action.data };
-			break;
+			// break;
 		
-		case: 'GET_ALL_MOVES':
+		case 'GET_ALL_MOVES':
 			return { ...state, moves: action.data };
-			break;
+			// break;
 
-		case: 'GET_POKEMON':
+		case 'GET_POKEMON':
 			return { ...state, current: action.data };
-			break;
+			// break;
 
 		default:
 			console.log('ERROR: reducer not found');
@@ -27,4 +28,4 @@ const Reducer = (state={
 	}
 }
 
-module.exports = Reducer;
+// module.exports = Reducer;
