@@ -8,7 +8,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { getAllPokemon: () => dispatch(Actions.getAllPokemon()).data }
+  return { 
+	getAllPokemon: () => dispatch(Actions.getAllPokemon()),
+  }
 };
 
 

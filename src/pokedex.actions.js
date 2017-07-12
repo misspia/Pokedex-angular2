@@ -1,6 +1,8 @@
 import PokemonList from './assets/json/pokemon.json';
 import Evolutions from './assets/json/evolution.json';
 import Moves from './assets/json/evolution.json';
+import n35 from './assets/json/n35.json';
+import n35Img from './assets/images/n35.png';
 
 // will make calls to server in the future
 // const API = { };
@@ -24,43 +26,13 @@ export const getAllMoves = () => {
 		data: Moves
 	}
 };
-export const getPokemonProfile = (id) => {
+export const getSelectedPokemon = (id) => {
 	return {
-		type: 'GET_POKEMON',
-		data: '',//get json file based on id
+		type: 'GET_SELECTED_POKEMON',
+		data: n35,//get json file based on id
+		img: n35Img
 	}
 };
-
-
-
-// const Actions = {
-// 	getAllPokemon: () => {
-// 		return {
-// 			type: 'GET_ALL_POKEMON',
-// 			data: PokemonList
-// 		}
-// 	},
-// 	getAllEvolutions: () => {
-// 		return {
-// 			type: 'GET_ALL_EVOLUTIONS',
-// 			data: Evolutions
-// 		}
-// 	},
-// 	getAllMoves: () => {
-// 		return {
-// 			type: 'GET_ALL_MOVES',
-// 			data: Moves
-// 		}
-// 	},
-// 	getPokemonProfile: (id) => {
-// 		return {
-// 			type: 'GET_POKEMON',
-// 			data: '',//get json file based on id
-// 		}
-// 	}
-// };
-// module.exports = Actions;
-
 
 
 

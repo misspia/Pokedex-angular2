@@ -3,12 +3,27 @@ import './List.scss';
 
 class List extends Component {
 	componentWillMount() {		
-		const test = this.props.getAllPokemon();
-		console.log('test', test)
-		console.log(this.props.allPokemon);	
+		this.props.getAllPokemon();
+	}
+	componentWillReceiveProps(nextProps) {
+		// console.log(nextProps.allPokemon);
+	}
+	renderSprites() {
+		return this.props.allPokemon.map((pokemon) => {
+			console.log(pokemon);
+			return this.renderSprite(pokemon);			
+		})
+	}
+	renderSprite(pokemon) {
+		return <li key={pokemon.unique_id}>
+				{pokemon.name}
+			</li>
 	}
 	render() {
-		return <div>list component</div>
+		
+		return <ul>
+			{this.renderSprites()}
+		</ul>
 	}
 }
 
