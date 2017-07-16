@@ -2,7 +2,7 @@ let fs = require('fs');
 var request = require('request');
 
 function writeFile(filepath, data) {
-
+	console.log(data);
 	fs.writeFile(filepath, JSON.stringify(data, null, 0), function(error){
 
 		if (error) return console.log(error);
