@@ -1,6 +1,7 @@
 import request from 'superagent';
 // import axios from 'axios';
-// import PokemonList from './assets/json/pokemon.json';
+import PokemonList from './assets/json/pokemon.json';
+import Profiles from './assets/json/mergedProfiles.json';
 import Evolutions from './assets/json/evolution.json';
 import Moves from './assets/json/evolution.json';
 import n35 from './assets/json/n35.json';
@@ -16,33 +17,15 @@ import n35Img from './assets/images/n35.png';
 // 	}
 // };
 
+console.log(Profiles);
 
 export const getAllPokemon = () => {
-	return request.get('./assets/json/evolution.json')
-		.then((res) => {
-			console.log(res);
-			return dispatch => {
-				return {
-					type: GET_ALL_POKEMON,
-					data: res
-				}
-					
-			}
-		})
+	return {
+		type: 'GET_ALL_POKEMON',
+		data: PokemonList
+	}
 };
-// axios('./assets/json/pokemon.json')
-// 		.then((res) => {
-// 			console.log('got the file!', res);
-// 			return dispatch => {
-// 				return {
-// 					type: 'GET_ALL_POKEMON',
-// 					data: res
-// 				}
-// 			}
-// 		})
-// 		.catch((err) => {
-// 			console.log('ERROR :((', err);
-// 		})
+
 
 export const getAllEvolutions = () => {
 	return {
@@ -59,18 +42,7 @@ export const getAllMoves = () => {
 export const getSelectedPokemon = (id) => {
 	return {
 		type: 'GET_SELECTED_POKEMON',
-		data: n35,//get json file based on id
+		data: Profiles[id],//get json file based on id
 		img: n35Img
 	}
 };
-// 	
-// import request from 'superagent';
-// import {dispatch} from 'pico-flux';
-
-// const Actions = {
-// 	getAllPokemon: () => {
-// 		dispatch('GET_ALL_POKEMON');
-// 	}
-// }
-
-// module.exports = Actions;

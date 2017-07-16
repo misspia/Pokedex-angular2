@@ -4,14 +4,7 @@ import request from 'superagent';
 
 class List extends Component {
 	componentWillMount() {		
-		// this.props.getAllPokemon();
-		request.get('./assets/json/evolution.json')
-			.then((res)=> {
-				console.log('SUCCESS!!', res);
-			})
-			.catch((err)=> {
-				console.log('ERROR :(', err);
-			})
+		this.props.getAllPokemon();
 	}
 	componentWillReceiveProps(nextProps) {
 		// console.log(nextProps.allPokemon);

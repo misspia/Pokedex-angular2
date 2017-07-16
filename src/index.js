@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
 
-// import List from './List/List.smart.jsx';
-import List from './List/List.jsx';
+import List from './List/List.smart.jsx';
+// import List from './List/List.jsx';
 import './index.css';
 
 import configureStore from './pokedex.store.js';

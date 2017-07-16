@@ -34,7 +34,7 @@ function readProfile(pokemon) {
 			if(err) reject(`COULDNT READ FILE OF ${pokemon.unique_id}`, err);
 			
 			let profileObj = {};
-			profileObj[pokemon.unique_id] = profile;
+			profileObj[pokemon.unique_id] = JSON.parse(profile);
 			resolve(profileObj);
 		})
 	})	
