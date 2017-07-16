@@ -10,13 +10,14 @@ mergeProfiles(pokemonList);
 function mergeProfiles(list) {
 	readAllProfiles(list)
 		.then((allProfiles) => {
-			//path from root directory
-			writeFile.json('./models/json/mergedProfiles.json', allProfiles);
+			const profilesObj = objectifyArray(allProfiles);
+			
+			writeFile.json('./models/json/mergedProfiles.json', profilesObj);
 		})
 		.catch((err) => { console.log('ERROR :( ', err); });
 }
 
-function readAllProfiles(list) {
+function readAllProfiles(list) {		
 	return Promise.all(
 		list.map((pokemon) => {
 			return readProfile(pokemon)
@@ -32,7 +33,17 @@ function readProfile(pokemon) {
 		fs.readFile(`./models/json/${pokemon.unique_id}.json`, 'utf8', (err, profile) => {
 			if(err) reject(`COULDNT READ FILE OF ${pokemon.unique_id}`, err);
 			
-			resolve(profile);
+			let profileObj = {};
+			profileObj[pokemon.unique_id] = profile;
+			resolve(profileObj);
 		})
 	})	
+}
+
+function objectifyArray(arr) {
+	return arr.reduce((acc, data, index) => {
+		const key = Object.keys(data)[0];
+		acc[key] = data[key];
+		return acc;
+	}, {});
 }
