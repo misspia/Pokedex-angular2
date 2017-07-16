@@ -1,0 +1,35 @@
+.list {
+	list-style-type: none;
+	padding: 1em 0;
+	margin:0;
+	display:flex;
+	justify-content:center;
+	width:100%;
+	flex-wrap: wrap;
+	// background-color: #10161d;
+	background: #10161d url('./dot_grid.png');
+	.sprite{
+		display:flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		margin: 0.2em;
+		padding: 0.4em 0.5em;
+		background-color: rgba(#51b6cb, 0.5);
+		border: solid #51b6cb 0.1em;
+		
+		border-radius: 0.1em;
+		cursor: pointer;
+		.pki{
+			background-image: url('./sprites.png');
+			width: 40px;
+			height: 30px;
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.nationalNo{
+			font-size: 0.8em;
+		}
+	}
+		
+}

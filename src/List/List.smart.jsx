@@ -4,12 +4,13 @@ import List from './List.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
-  return { allPokemon: state.pokemon }
+  return { allPokemon: state.pokemon, selected: state.selected }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return { 
 	getAllPokemon: () => dispatch(Actions.getAllPokemon()),
+	select: (id) => dispatch(Actions.getSelectedPokemon(id))
   }
 };
 

@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux';
+import { createStore } from 'redux';
 import Reducers from './pokedex.reducers.js';
 
 const initialState = { };
