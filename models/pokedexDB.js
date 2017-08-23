@@ -56,6 +56,37 @@ function generateConditionString(fields, targets) {
 	return condition;
 }
 
+function jsonifyDBQueryWithTarget(queryString) {
+	
+	const client = new pg.Client(connectionString);
+	client.connect();
+	let query = client.query(queryString);	
+	let mergedResult = {};
+	
+	query.on("row", function (row, result) {
+	    result.addRow(row);
+	    // result["test"] = row;
+	    Object.keys(row).forEach(function(key) {
+	    	if (mergedResult[key]) {
+	    		mergedResult[key].push(row[key]);
+	    	} else {
+	    		mergedResult[key] = [row[key]];
+	    	}
+		});
+	    // console.log(row);
+	});
+
+	return new Promise( (resolve, reject) => {
+		query.on("end", function (result) {
+			console.log(mergedResult);
+			resolve(JSON.stringify(mergedResult));
+			// resolve(JSON.stringify(result.rows));
+			// resolve(JSON.stringify(result.test));
+		    client.end();
+		});	
+	})
+};
+
 function jsonifyDBQuery(queryString) {
 	
 	const client = new pg.Client(connectionString);
@@ -89,15 +120,19 @@ function jsonifyDBQuery(queryString) {
 app.get('/api/category=:category&field=:field&target=:target?', (req, res) => {
 	let queryString = "";
 	let tables = req.params.category;
+	let noTarget = (req.params.target == 'false')
 
-	if(req.params.target) {
-		queryString = generateQueryString(tables, req.params.field, req.params.target);
-	} else {
+	if(noTarget) {
 		queryString = generateQueryString(tables, req.params.field);
+		jsonifyDBQuery(queryString).then( (data) => {
+			res.send(data);
+		});
+	} else {
+		queryString = generateQueryString(tables, req.params.field, req.params.target);
+		jsonifyDBQueryWithTarget(queryString).then( (data) => {
+			res.send(data);
+		});
 	}
-	jsonifyDBQuery(queryString).then( (data) => {
-		res.send(data);
-	});
 });
 
 app.listen(port, () => {
