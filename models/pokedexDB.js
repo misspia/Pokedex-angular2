@@ -57,7 +57,7 @@ function generateConditionString(fields, targets) {
 }
 
 function jsonifyDBQueryWithTarget(queryString) {
-	
+	console.log(queryString)
 	const client = new pg.Client(connectionString);
 	client.connect();
 	let query = client.query(queryString);	
@@ -78,7 +78,7 @@ function jsonifyDBQueryWithTarget(queryString) {
 
 	return new Promise( (resolve, reject) => {
 		query.on("end", function (result) {
-			console.log(mergedResult);
+			// console.log(mergedResult);
 			resolve(JSON.stringify(mergedResult));
 			// resolve(JSON.stringify(result.rows));
 			// resolve(JSON.stringify(result.test));
@@ -138,4 +138,3 @@ app.get('/api/category=:category&field=:field&target=:target?', (req, res) => {
 app.listen(port, () => {
 	console.log('Listening on port ' + port);
 });
-
