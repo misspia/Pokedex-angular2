@@ -147,9 +147,9 @@ const port = 3001;
 // const path = require('path');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
 const { Client } = require('pg');
-const client = new Client({ connectionString});
+// const client = new Client({ connectionString});
 
-client.connect();
+// client.connect();
 
 
 const schema = {
@@ -168,14 +168,27 @@ const schema = {
 	evolutions: 'pokedex.evolutions'
 };
 
-
-
 const QP = {
 	query: (tables, where, target) => {
 		const tablesArr = tables.split(',');
-		const additionalArg = where === '*' ? '' : `WHERE ${where}=${target}`;	
+		const additionalArg = where === '*' ? '' : `WHERE ${where}='${target}'`;	
 		const queryString = QP.eachTable(tablesArr, additionalArg);
 		console.log(queryString);
+
+		const client = new Client({connectionString});
+		client.connect();
+		
+		return new Promise( (resolve, reject) => {
+			client.query(queryString)
+			.then((res) => {
+				console.log('SUCCESS WOOO', res);
+				resolve(JSON.stringify(res));
+			})
+			.catch((err) => {
+				console.log('ERROR :((( ', err);
+				reject(err);
+			});
+		})
 	},
 	selectString: (table, additionalArg) => {
 		return `SELECT * FROM ${schema[table]} ${additionalArg};\n`;
@@ -206,7 +219,13 @@ app.get('/api/category=:category&where=:where?&target=:target?', (req, res) => {
 	const tables = req.params.category;
 	const target = req.params.target;
 	const where = req.params.where;
-	QP.query(tables, where, target);
+	QP.query(tables, where, target)
+	.then((data) => {
+		res.send(data);
+	})
+	.catch((err) => {
+		res.send(err);
+	});
 });
 
 
