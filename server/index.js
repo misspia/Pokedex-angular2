@@ -3,22 +3,17 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
-//EXAMPLES:
-// http://localhost:3001/api/category=main,location&where=unique_id&target=n1
-// http://localhost:3001/api/category=evolutions&where=*&target=*
-app.get('/api/category=:category&where=:where?&target=:target?', (req, res) => {
-	let queryString = "";
-	const tables = req.params.category;
-	const target = req.params.target;
-	const where = req.params.where;
-	Controller.query(tables, where, target)
-	.then((data) => {
-		res.send(data);
-	})
-	.catch((err) => {
-		res.send(err);
-	});
-});
+const PokedexRouter = require('./routes/pokedex.router.js');
+const EvolutionsRouter = require('./routes/evolutions.router.js');
+const TypesRouter = require('./routes/types.router.js');
+const MovesRouter = require('./routes/moves.router.js');
+const AbilitiesRouter = require('./routes/abilities.router.js');
+
+app.use('/api/v1/pokedex', PokedexRouter);
+app.use('/api/v1/evolutions', EvolutionsRouter);
+app.use('/api/v1/types_chart/', TypesRouter);
+app.use('/api/v1/moves_description', MovesRouter);
+app.use('/api/v1/abilities_description', AbilitiesRouter);
 
 app.listen(port, () => {
 	console.log('Listening on port ', port);
