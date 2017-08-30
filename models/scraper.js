@@ -1,10 +1,10 @@
-let pokemonList = require('./scraperMethods/pokemonList');
-let evolutionChart = require('./scraperMethods/evolutionChart');
-let masterTypeChart = require('./scraperMethods/masterTypeChart');
-let masterMoveList = require('./scraperMethods/masterMoveList');
-let masterAbilityList = require('./scraperMethods/masterAbilityList');
-let writeFile = require('./scraperMethods/helpers/writeFile');
-let writeProfiles = require('./scraperMethods/writeProfiles');
+let pokemonList = require('./scraperMethods/pokemonList.js');
+let evolutionChart = require('./scraperMethods/evolutionChart.js');
+let masterTypeChart = require('./scraperMethods/masterTypeChart.js');
+let masterMoveList = require('./scraperMethods/masterMoveList.js');
+let masterAbilityList = require('./scraperMethods/masterAbilityList.js');
+let writeFile = require('./scraperMethods/helpers/writeFile.js');
+let writeProfiles = require('./scrapeProfiles.js');
 let EventEmitter = require('events');
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
@@ -14,13 +14,13 @@ function main() {
 	
 	const baseUrl = "http://pokemondb.net";
 
-	pokemonList.get(baseUrl, list => {
-		writeFile.json('./json/pokemon.json', list);
-		writeProfiles.profiles();
-	})
-	// evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
-	// 	writeFile.json('./json/evolution.json', evolFamilies);
-	// });	
+	// pokemonList.get(baseUrl, list => {
+	// 	writeFile.json('./json/pokemon.json', list);
+	// 	writeProfiles.profiles();
+	// });
+	evolutionChart.get(baseUrl + '/evolution', evolFamilies => {
+		writeFile.json('./json/evolutions.json', evolFamilies);
+	});	
 
 	// masterTypeChart.get(baseUrl + '/type/dual', types => {
 	// 	writeFile.json('./json/types.json', types);
