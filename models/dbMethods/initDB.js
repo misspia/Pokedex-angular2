@@ -1,5 +1,5 @@
-// remove schema: drop schema DBNAME cascade
-// create db: create database DBNAME
+// remove schema: drop schema <DBNAME> cascade;
+// create db: create database <DBNAME>;
 // see list of all db: \l
 
 const createTables = require ('./createTables.js');
