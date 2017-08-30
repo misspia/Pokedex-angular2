@@ -9,11 +9,11 @@ const TypesRouter = require('./routes/types.router.js');
 const MovesRouter = require('./routes/moves.router.js');
 const AbilitiesRouter = require('./routes/abilities.router.js');
 
-app.use('/api/pokedex', PokedexRouter);
-app.use('/api/evolutions', EvolutionsRouter);
-app.use('/api/types_chart/', TypesRouter);
-app.use('/api/moves_description', MovesRouter);
-app.use('/api/abilities_description', AbilitiesRouter);
+app.use('/api/v1/pokedex', PokedexRouter);
+app.use('/api/v1/evolutions', EvolutionsRouter);
+app.use('/api/v1/types_chart/', TypesRouter);
+app.use('/api/v1/moves_description', MovesRouter);
+app.use('/api/v1/abilities_description', AbilitiesRouter);
 
 app.listen(port, () => {
 	console.log('Listening on port ', port);
