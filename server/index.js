@@ -1,4 +1,3 @@
-const Controller = require('./controller.js');
 const express = require('express');
 const app = express();
 const port = 3001;
