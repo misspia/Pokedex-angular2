@@ -3,7 +3,7 @@ const schema = require('./schema.js');
 
 const tables = {
 	all: ['main'],
-	id: ['main', 'general', 'moves', 'base_stats', 'min_stats', 'max_stats', 'training', 'types', 'location']
+	pid: ['main', 'general', 'moves', 'base_stats', 'min_stats', 'max_stats', 'training', 'types', 'location']
 };
 
 const Model = {
@@ -18,11 +18,11 @@ const Model = {
 			return err;
 		});
 	},
-	id: (id) => {
-		const whereCondition = QP.whereCondition(`unique_id='${id}'`);
-		const queryString = QP.eachTable(tables.id, whereCondition);
+	pid: (pid) => {
+		const whereCondition = QP.whereCondition(`unique_id='${pid}'`);
+		const queryString = QP.eachTable(tables.pid, whereCondition);
 
-		return QP.query(tables.id, queryString)
+		return QP.query(tables.pid, queryString)
 		.then((res) => {
 			return res;
 		}) 
@@ -33,13 +33,3 @@ const Model = {
 }
 
 module.exports = Model;
-
-
-
-
-
-
-
-
-
-

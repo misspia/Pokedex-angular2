@@ -6,8 +6,8 @@ const Controller = {
 			.then((data) => { res.send(data); })
 			.catch((err) => { res.send( err); });
 	},
-	id: (req, res) => {
-		Pokedex.id(req.params.id)
+	pid: (req, res) => {
+		Pokedex.pid(req.params.pid)
 			.then((data) => { res.send(data); })
 			.catch((err) => { res.send(err); });
 	}
