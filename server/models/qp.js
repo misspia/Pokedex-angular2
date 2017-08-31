@@ -1,8 +1,34 @@
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
+const { Client } = require('pg');
+
 const schema = require('../models/schema.js');
 
+const client = new Client({connectionString});
+client.connect();
+
 const QP = {
-	selectString: (table, whereCondition) => {
+	query: (tables, queryString) => {
+		const client = new Client({connectionString});
+		client.connect();
+
+		return new Promise( (resolve, reject) => {
+			client.query(queryString)
+			.then((res) => {
+				console.log('SUCCESS');
+				const prettyResult = QP.prettifyResult(tables, res);
+				resolve(prettyResult);
+			})
+			.catch((err) => {
+				console.log('ERROR :(', err);
+				reject(err);
+			});
+		}) 
+	},
+	selectString: (table, whereCondition='') => {
 		return `SELECT * FROM ${schema[table]} ${whereCondition};\n`;
+	},
+	whereCondition: (condition) => {
+		return `WHERE ${condition}`;
 	},
 	eachTable: (tables, whereCondition) => {
 		let queryString = ``;
