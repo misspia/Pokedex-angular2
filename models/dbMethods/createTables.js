@@ -20,7 +20,7 @@ const createTables =
 	create table pokedex.abilities(
 		
 		unique_id  	text,
-		ability  	text
+		ability  		text
 	);
 
 	create table pokedex.description(
@@ -32,7 +32,7 @@ const createTables =
 	create table pokedex.moves(
 		
 		unique_id 	  	text,
-		method 		  	text,
+		method 		text,
 		level 		  	text,
 		name 		  	text,		
 		type 		  	text,
@@ -53,22 +53,22 @@ const createTables =
 	create table pokedex.base_stats(
 		
 		unique_id  			text,
-		hp 		 			integer,
+		hp 		 		integer,
 		attack 	 			integer,
 		defence  			integer,
 		special_attack  		integer,
-		spedical_defence  	integer,
+		spedical_defence  		integer,
 		speed 			 	integer
 	);
 
 	create table pokedex.min_stats(
 		
 		unique_id 		 	text,
-		hp 				 	integer,
+		hp 				 integer,
 		attack 			 	integer,
 		defence 		 	integer,
-		special_attack 	 	integer,
-		spedical_defence  	integer,
+		special_attack 	 		integer,
+		spedical_defence  		integer,
 		speed 			 	integer
 	);
 
