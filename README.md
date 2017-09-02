@@ -1,12 +1,12 @@
-#Client
+# Client
 Start development server:
 ```npm run dev```
 
-navigate to  http://localhost:8080/
+Navigate to  http://localhost:8080/
 
-Build:
+# Build:
 ```npm run build```
 
-#Server
+# Server
 Make sure relevant postgres server is running. Start development server: 
 ```npm run start-server```
