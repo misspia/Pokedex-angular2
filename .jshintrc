@@ -1,0 +1,5 @@
+{
+	"esversion": 6,
+	"proto": true,
+	"-W030": true
+}
