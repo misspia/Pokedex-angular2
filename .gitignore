@@ -1,3 +1,4 @@
+#db
 /models/*.txt
 
 # compiled output
@@ -12,3 +13,4 @@ Thumbs.db
 
 #dev
 src/**/*.css
+config/local.json

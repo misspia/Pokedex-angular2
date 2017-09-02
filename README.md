@@ -4,7 +4,7 @@ Start development server:
 
 Navigate to  http://localhost:8080/
 
-# Build:
+# Build
 ```npm run build```
 
 # Server
