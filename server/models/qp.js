@@ -1,16 +1,18 @@
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pokedex';
+const config = require('../../config/local.json');
 const { Client } = require('pg');
-
 const schema = require('../models/schema.js');
 
-const client = new Client({connectionString});
+const client = new Client({
+	user: config.pg.user,
+	host: config.pg.host,
+	database: config.pg.database,
+	password: config.pg.password,
+	port: config.pg.port
+});
 client.connect();
 
 const QP = {
 	query: (tables, queryString) => {
-		const client = new Client({connectionString});
-		client.connect();
-
 		return new Promise( (resolve, reject) => {
 			client.query(queryString)
 			.then((res) => {
