@@ -1,12 +1,3 @@
-# Client
-Start development server:
-```npm run dev```
 
-Navigate to  http://localhost:8080/
-
-# Build
-```npm run build```
-
-# Server
-Make sure relevant postgres server is running. Start development server: 
-```npm run start-server```
+## THIS PROJECT HAS BEEN MOVED TO  
+https://github.com/SEAKING-LOVE/react-pokedex

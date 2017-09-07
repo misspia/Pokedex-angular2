@@ -14,7 +14,8 @@ const QP = {
 		return new Promise( (resolve, reject) => {
 			client.query(queryString)
 			.then((res) => {
-				console.log('SUCCESS');
+				// console.log('SUCCESS');
+				console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
 				const prettyResult = QP.prettifyResult(tables, res);
 				resolve(prettyResult);
 			})
